@@ -1,0 +1,1399 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-r from-primary-600 via-blue-600 to-indigo-600 dark:from-primary-800 dark:via-blue-800 dark:to-indigo-800 text-white overflow-hidden">
+    <!-- Animated Background -->
+    <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-600/20 to-blue-600/20 dark:from-primary-800/20 dark:to-blue-800/20"></div>
+        <div class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full filter blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl translate-x-1/3 translate-y-1/3"></div>
+    </div>
+    
+    <div class="relative container mx-auto px-4 py-20 md:py-32">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="hero-content">
+                <div class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6">
+                    <span class="flex w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    <span class="text-sm">{% trans "2,500+ Active Students Today" %}</span>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-text">
+                    {% trans "Learn, Grow, <span class='text-yellow-300'>Succeed</span>" %}
+                </h1>
+                <p class="text-xl mb-8 opacity-90">
+                    {% trans "Join thousands of students learning new skills with our comprehensive educational platform. Courses, articles, books, and scholarships all in one place." %}
+                </p>
+                
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <a href="{% url 'courses:list' %}" class="group btn-primary bg-white text-primary-600 hover:bg-gray-100 px-8 py-3 text-lg flex items-center">
+                        <span>{% trans "Start Learning" %}</span>
+                        <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </a>
+                    <a href="{% url 'scholarships:list' %}" class="group border-2 border-white text-white hover:bg-white/10 px-8 py-3 text-lg rounded-lg transition duration-300 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>{% trans "Find Scholarships" %}</span>
+                    </a>
+                </div>
+                
+                <!-- Trust Indicators -->
+                <div class="flex flex-wrap items-center gap-6">
+                    <div class="flex items-center">
+                        <div class="flex -space-x-2 mr-3">
+                            {% for i in "1234" %}
+                            <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-300 flex items-center justify-center text-xs font-bold">
+                                {{ i }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <span class="text-sm">{% trans "4,500+ Happy Students" %}</span>
+                    </div>
+                    <div class="flex items-center text-yellow-400">
+                        {% for i in "12345" %}
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        {% endfor %}
+                        <span class="text-white ml-2">4.8/5.0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <!-- Floating Elements -->
+                <div class="absolute -top-4 -left-4 w-24 h-24 bg-yellow-400/20 rounded-full blur-xl"></div>
+                <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-400/20 rounded-full blur-xl"></div>
+                
+                <!-- Hero Image with Animation -->
+                <div class="relative z-10">
+                    <img src="{% static 'images/hero-image.svg' %}" 
+                         alt="{% trans 'Online Learning' %}" 
+                         class="w-full h-auto animate-float"
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'">
+                </div>
+                
+                <!-- Floating Badges -->
+                <div class="absolute top-10 -left-4 bg-white dark:bg-gray-800 shadow-xl rounded-xl p-4 animate-bounce-slow hidden md:block">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-900 dark:text-white">150+</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Courses" %}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="absolute bottom-10 -right-4 bg-white dark:bg-gray-800 shadow-xl rounded-xl p-4 animate-bounce-slow hidden md:block" style="animation-delay: 1s">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-gray-900 dark:text-white">24/7</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Support" %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Wave Divider with Animation -->
+    <div class="absolute bottom-0 left-0 right-0 overflow-hidden">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="fill-current text-white dark:text-gray-900 w-full h-16 md:h-24">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-12 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {% comment %} {% with stats=stats|default_if_none:{"total_courses": 150, "total_students": 4500, "total_articles": 250, "total_scholarships": 80, "total_books": 120} %} {% endcomment %}
+            {% with stats=stats|default:stats_fallback %}
+            <div class="text-center group">
+                <div class="inline-block p-4 rounded-2xl bg-white dark:bg-gray-800 shadow-lg group-hover:shadow-xl transition-shadow duration-300 mb-4">
+                    <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    <span class="counter" data-target="{{ stats.total_courses }}">0</span>+
+                </div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Online Courses" %}</div>
+            </div>
+            
+            <div class="text-center group">
+                <div class="inline-block p-4 rounded-2xl bg-white dark:bg-gray-800 shadow-lg group-hover:shadow-xl transition-shadow duration-300 mb-4">
+                    <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.67 3.623a9 9 0 01-13.67 0"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    <span class="counter" data-target="{{ stats.total_students }}">0</span>+
+                </div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Active Students" %}</div>
+            </div>
+            
+            <div class="text-center group">
+                <div class="inline-block p-4 rounded-2xl bg-white dark:bg-gray-800 shadow-lg group-hover:shadow-xl transition-shadow duration-300 mb-4">
+                    <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    <span class="counter" data-target="{{ stats.total_articles }}">0</span>+
+                </div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Articles" %}</div>
+            </div>
+            
+            <div class="text-center group">
+                <div class="inline-block p-4 rounded-2xl bg-white dark:bg-gray-800 shadow-lg group-hover:shadow-xl transition-shadow duration-300 mb-4">
+                    <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    <span class="counter" data-target="{{ stats.total_scholarships }}">0</span>+
+                </div>
+                <div class="text-gray-600 dark:text-gray-400">{% trans "Scholarships" %}</div>
+            </div>
+            {% endwith %}
+        </div>
+    </div>
+</section>
+
+<!-- Quick Categories -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {% trans "Explore by Category" %}
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                {% trans "Discover courses and resources in your area of interest" %}
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {% for category in menu_categories|slice:":6" %}
+            <a href="{% url 'courses:list' %}?category={{ category.slug }}" 
+               class="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="w-12 h-12 mx-auto mb-4 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800/50 transition-colors">
+                    <span class="text-2xl">{{ category.icon|default:"📚" }}</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                    {{ category.name }}
+                </h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {% trans "Explore" %}
+                </p>
+            </a>
+            {% empty %}
+            <!-- Default categories if none exist -->
+            <div class="col-span-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {% for cat_name, cat_icon in categories_default %}
+                <a href="{% url 'courses:list' %}" 
+                   class="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 mx-auto mb-4 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-800/50 transition-colors">
+                        <span class="text-2xl">{{ cat_icon }}</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                        {% trans cat_name %}
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        {% trans "Explore" %}
+                    </p>
+                </a>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Courses -->
+<section class="py-16 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+                <span class="inline-block px-4 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-full text-sm font-medium mb-3">
+                    {% trans "Popular" %}
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    {% trans "Featured Courses" %}
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% trans "Discover our most popular courses selected by students" %}
+                </p>
+            </div>
+            <a href="{% url 'courses:list' %}" class="group inline-flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium">
+                <span>{% trans "View All Courses" %}</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for course in featured_courses|default_if_none:"" %}
+            <div class="group course-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <a href="{% url 'courses:detail' course.slug %}" class="block relative overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="{{ course.featured_image.url|default:'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80' }}" 
+                             alt="{{ course.title }}" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        {% if course.has_discount %}
+                        <div class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                            -{% widthratio course.discount_price course.price 100 %}% OFF
+                        </div>
+                        {% endif %}
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm rounded-full">
+                                {{ course.get_level_display }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                            {% if course.price > 0 %}
+                                <span class="text-sm font-bold text-primary-600">
+                                    {% if course.has_discount %}
+                                        {{ course.current_price }}<span class="text-xs">EGP</span>
+                                    {% else %}
+                                        {{ course.price }}<span class="text-xs">EGP</span>
+                                    {% endif %}
+                                </span>
+                            {% else %}
+                                <span class="text-sm font-bold text-green-600">FREE</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center">
+                            <div class="flex">
+                                {% for i in "12345" %}
+                                {% if forloop.counter <= course.average_rating|default:4|floatformat:0 %}
+                                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                                {% else %}
+                                <svg class="w-4 h-4 text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span class="text-sm text-gray-600 dark:text-gray-400 ml-2">
+                                {{ course.average_rating|default:"4.5" }} ({{ course.reviews.count|default:"128" }})
+                            </span>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ course.duration|default:"8h 30m" }}
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                        <a href="{% url 'courses:detail' course.slug %}">
+                            {{ course.title|default:"Complete Web Development Bootcamp" }}
+                        </a>
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                        {{ course.excerpt|default:"Learn web development from scratch with HTML, CSS, JavaScript, React, Node.js and more."|truncatechars:100 }}
+                    </p>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="{{ course.author.profile_picture.url|default:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80' }}" 
+                                 alt="{{ course.instructor|default:'John Doe' }}" 
+                                 class="w-8 h-8 rounded-full object-cover mr-3">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ course.instructor|default:"John Doe" }}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    {% trans "Instructor" %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-right">
+                            {% if course.price > 0 %}
+                                {% if course.has_discount %}
+                                <div class="flex flex-col items-end">
+                                    <span class="text-lg font-bold text-primary-600 dark:text-primary-400">{{ course.current_price|default:"199" }} {% trans "EGP" %}</span>
+                                    <span class="text-sm line-through text-gray-500">{{ course.price|default:"399" }} {% trans "EGP" %}</span>
+                                </div>
+                                {% else %}
+                                <span class="text-lg font-bold text-primary-600 dark:text-primary-400">{{ course.price|default:"299" }} {% trans "EGP" %}</span>
+                                {% endif %}
+                            {% else %}
+                            <span class="text-lg font-bold text-green-600 dark:text-green-400">{% trans "Free" %}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Sample courses when no featured courses -->
+            {% for i in "123" %}
+            <div class="group course-card bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <a href="#" class="block relative overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Course Image" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm rounded-full">
+                                {% if i == "1" %}{% trans "Beginner" %}{% elif i == "2" %}{% trans "Intermediate" %}{% else %}{% trans "Advanced" %}{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                            <span class="text-sm font-bold text-primary-600">
+                                {% if i == "1" %}FREE{% elif i == "2" %}199<span class="text-xs">EGP</span>{% else %}299<span class="text-xs">EGP</span>{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center">
+                            <div class="flex">
+                                {% for star in "12345" %}
+                                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                                {% endfor %}
+                            </div>
+                            <span class="text-sm text-gray-600 dark:text-gray-400 ml-2">
+                                4.8 (128)
+                            </span>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            {% if i == "1" %}10h{% elif i == "2" %}15h{% else %}20h{% endif %}
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                        <a href="#">
+                            {% if i == "1" %}{% trans "Complete Python Programming Masterclass" %}
+                            {% elif i == "2" %}{% trans "Data Science & Machine Learning Bootcamp" %}
+                            {% else %}{% trans "Full Stack Web Development Course" %}{% endif %}
+                        </a>
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                        {% if i == "1" %}{% trans "Learn Python from beginner to advanced with real-world projects and applications." %}
+                        {% elif i == "2" %}{% trans "Master data science, machine learning, and AI with hands-on projects and case studies." %}
+                        {% else %}{% trans "Become a full-stack developer by learning front-end and back-end technologies." %}{% endif %}
+                    </p>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
+                                 alt="Instructor" 
+                                 class="w-8 h-8 rounded-full object-cover mr-3">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {% if i == "1" %}Alex Johnson{% elif i == "2" %}Sarah Miller{% else %}David Wilson{% endif %}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    {% trans "Instructor" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+        
+        <!-- Courses Progress Bar -->
+        <div class="mt-12 bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-2xl p-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        {% trans "Start Learning Today" %}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        {% trans "Join thousands of students already learning with us" %}
+                    </p>
+                </div>
+                <div class="flex gap-4">
+                    <a href="{% url 'courses:list' %}" class="btn-primary px-8 py-3">
+                        {% trans "Browse All Courses" %}
+                    </a>
+                    <a href="{% url 'courses:list' %}?price=free" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-3 rounded-lg font-medium transition duration-300">
+                        {% trans "Free Courses" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Learning Paths -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {% trans "Choose Your Learning Path" %}
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                {% trans "Follow structured learning paths designed by industry experts to achieve your career goals" %}
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="relative group">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-8 text-white h-full">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">{% trans "Web Development" %}</h3>
+                    <p class="opacity-90 mb-6">
+                        {% trans "Become a full-stack developer with HTML, CSS, JavaScript, React, Node.js and more." %}
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "12 Courses" %}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "120 Hours" %}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "Certificate" %}</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'courses:list' %}?category=web-development" 
+                       class="mt-6 inline-flex items-center text-white hover:text-blue-200">
+                        <span>{% trans "Start Path" %}</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="relative group">
+                <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-8 text-white h-full">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">{% trans "Data Science" %}</h3>
+                    <p class="opacity-90 mb-6">
+                        {% trans "Master data analysis, machine learning, and AI with Python and real-world projects." %}
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "10 Courses" %}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "90 Hours" %}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "Certificate" %}</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'courses:list' %}?category=data-science" 
+                       class="mt-6 inline-flex items-center text-white hover:text-green-200">
+                        <span>{% trans "Start Path" %}</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="relative group">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-8 text-white h-full">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">{% trans "Business & Finance" %}</h3>
+                    <p class="opacity-90 mb-6">
+                        {% trans "Learn business management, finance, marketing, and entrepreneurship skills." %}
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "8 Courses" %}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "60 Hours" %}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm">{% trans "Certificate" %}</span>
+                        </div>
+                    </div>
+                    <a href="{% url 'courses:list' %}?category=business" 
+                       class="mt-6 inline-flex items-center text-white hover:text-purple-200">
+                        <span>{% trans "Start Path" %}</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Articles -->
+<section class="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+                <span class="inline-block px-4 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium mb-3">
+                    {% trans "Latest" %}
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    {% trans "Educational Articles" %}
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% trans "Stay updated with our latest educational content and insights" %}
+                </p>
+            </div>
+            <a href="{% url 'articles:list' %}" class="group inline-flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium">
+                <span>{% trans "View All Articles" %}</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for article in featured_articles|default_if_none:"" %}
+            <article class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <a href="{% url 'articles:detail' article.slug %}" class="block relative overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="{{ article.featured_image.url|default:'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80' }}" 
+                             alt="{{ article.title }}" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="inline-block px-3 py-1 bg-primary-600 text-white text-sm rounded-full">
+                                {% trans "Article" %}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="p-6">
+                    <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>{{ article.reading_time|default:"5" }} {% trans "min read" %}</span>
+                        <span class="mx-2">•</span>
+                        <span>{{ article.created_at|date:"M d, Y"|default:"Today" }}</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                        <a href="{% url 'articles:detail' article.slug %}">
+                            {{ article.title|default:"The Future of Online Education in 2024" }}
+                        </a>
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2">
+                        {{ article.excerpt|default:"Discover the latest trends and innovations shaping the future of online learning and education technology."|truncatechars:100 }}
+                    </p>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center">
+                            {% if article.author.profile_picture %}
+                                <img src="{{ article.author.profile_picture.url }}"
+                                    alt="{{ article.author.username }}"
+                                    class="w-8 h-8 rounded-full object-cover mr-3">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b786d4d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
+                                    alt="Author"
+                                    class="w-8 h-8 rounded-full object-cover mr-3">
+                            {% endif %}
+                            <div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {{ article.author.get_full_name|default:article.author.username|default:"Jane Smith" }}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    {% trans "Education Expert" %}
+                                </div>
+                            </div>
+                        </>
+                        
+                        <a href="{% url 'articles:detail' article.slug %}" class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <!-- Sample articles when no featured articles -->
+            {% for i in "1234" %}
+            <article class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <a href="#" class="block relative overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Article Image" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute top-4 left-4">
+                            <span class="inline-block px-3 py-1 bg-primary-600 text-white text-sm rounded-full">
+                                {% trans "Article" %}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="p-6">
+                    <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>{% if i == "1" %}5{% elif i == "2" %}8{% elif i == "3" %}6{% else %}7{% endif %} {% trans "min read" %}</span>
+                        <span class="mx-2">•</span>
+                        <span>{% trans "Today" %}</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                        <a href="#">
+                            {% if i == "1" %}{% trans "How to Stay Motivated While Learning Online" %}
+                            {% elif i == "2" %}{% trans "Top 10 Programming Languages to Learn in 2024" %}
+                            {% elif i == "3" %}{% trans "The Benefits of Microlearning for Busy Professionals" %}
+                            {% else %}{% trans "Building a Successful Career in Tech: A Complete Guide" %}{% endif %}
+                        </a>
+                    </h3>
+                    
+                    <p class="text-gray-600 dark:text-gray-400 mb-6 line-clamp-2">
+                        {% if i == "1" %}{% trans "Discover effective strategies to maintain motivation and consistency in your online learning journey." %}
+                        {% elif i == "2" %}{% trans "Explore the most in-demand programming languages and frameworks for the coming year." %}
+                        {% elif i == "3" %}{% trans "Learn how microlearning can help you acquire new skills efficiently despite a busy schedule." %}
+                        {% else %}{% trans "A comprehensive guide to building a successful career in the technology industry." %}{% endif %}
+                    </p>
+                    
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b786d4d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
+                                 alt="Author" 
+                                 class="w-8 h-8 rounded-full object-cover mr-3">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                    {% if i == "1" %}Emma Wilson{% elif i == "2" %}Michael Chen{% elif i == "3" %}Sarah Johnson{% else %}David Brown{% endif %}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    {% trans "Education Expert" %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-16 bg-gradient-to-r from-primary-50 via-blue-50 to-indigo-50 dark:from-primary-900/10 dark:via-blue-900/10 dark:to-indigo-900/10">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {% trans "What Our Students Say" %}
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                {% trans "Join thousands of satisfied students who have transformed their careers with our platform" %}
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for testimonial in testimonials|default_if_none:"" %}
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative">
+                <div class="absolute -top-3 -left-3 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="flex items-center mb-4">
+                    <div class="flex">
+                        {% for star in "12345" %}
+                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-6 italic">
+                    "{{ testimonial.content|default:'This platform completely transformed my career. The courses are comprehensive and the instructors are amazing!' }}"
+                </p>
+                <div class="flex items-center">
+                    <img src="{{ testimonial.avatar|default:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80' }}" 
+                         alt="{{ testimonial.name|default:'John Doe' }}" 
+                         class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold text-gray-900 dark:text-white">
+                            {{ testimonial.name|default:"Ahmed Mohamed" }}
+                        </h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ testimonial.position|default:"Web Developer" }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Sample testimonials -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative">
+                <div class="absolute -top-3 -left-3 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="flex items-center mb-4">
+                    <div class="flex">
+                        {% for star in "12345" %}
+                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-6 italic">
+                    "هذه المنصة غيرت مساري المهني بالكامل. الدورات شاملة والمدرسون رائعون! تمكنت من الحصول على وظيفة أحلامي في غضون 6 أشهر فقط."
+                </p>
+                <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
+                         alt="Student" 
+                         class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold text-gray-900 dark:text-white">
+                            أحمد محمد
+                        </h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            مطور ويب
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative">
+                <div class="absolute -top-3 -left-3 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="flex items-center mb-4">
+                    <div class="flex">
+                        {% for star in "12345" %}
+                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-6 italic">
+                    "The scholarship section helped me secure funding for my master's degree. The application tips were incredibly valuable and made the process much easier."
+                </p>
+                <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b786d4d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
+                         alt="Student" 
+                         class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold text-gray-900 dark:text-white">
+                            Sarah Johnson
+                        </h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Master's Student
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 relative">
+                <div class="absolute -top-3 -left-3 w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="flex items-center mb-4">
+                    <div class="flex">
+                        {% for star in "12345" %}
+                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-6 italic">
+                    "أفضل منصة تعليمية عربية واجهتها. المحتوى منظم بشكل رائع والدعم الفني سريع الاستجابة. أنصح بها بشدة!"
+                </p>
+                <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
+                         alt="Student" 
+                         class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <h4 class="font-bold text-gray-900 dark:text-white">
+                            فاطمة علي
+                        </h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            مصممة جرافيك
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Scholarships -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div>
+                <span class="inline-block px-4 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full text-sm font-medium mb-3">
+                    {% trans "Funding" %}
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    {% trans "Latest Scholarships" %}
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% trans "Find opportunities to fund your education and advance your career" %}
+                </p>
+            </div>
+            <a href="{% url 'scholarships:list' %}" class="group inline-flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium">
+                <span>{% trans "View All Scholarships" %}</span>
+                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for scholarship in featured_scholarships|default_if_none:"" %}
+            <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <a href="{% url 'scholarships:detail' scholarship.slug %}" class="block relative overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="{{ scholarship.featured_image.url|default:'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80' }}" 
+                             alt="{{ scholarship.title }}" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-block px-3 py-1 bg-green-500 text-white text-sm font-bold rounded-full">
+                                {{ scholarship.country|default:"USA" }}
+                            </span>
+                        </div>
+                        {% if scholarship.is_deadline_passed %}
+                        <div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm">
+                            {% trans "Expired" %}
+                        </div>
+                        {% elif scholarship.days_until_deadline <= 7 %}
+                        <div class="absolute top-4 left-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm animate-pulse">
+                            {% trans "Ending Soon" %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </a>
+                
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                            {{ scholarship.university|default:"Harvard University" }}
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                        <a href="{% url 'scholarships:detail' scholarship.slug %}">
+                            {{ scholarship.title|default:"Fully Funded Master's Scholarship in Computer Science" }}
+                        </a>
+                    </h3>
+                    
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center text-sm">
+                            <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-400">
+                                {{ scholarship.get_scholarship_type_display|default:"Master's" }}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center text-sm">
+                            <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-400">
+                                {% trans "Deadline:" %} {{ scholarship.deadline|date:"M d, Y"|default:"Dec 31, 2024" }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    {% if not scholarship.is_deadline_passed %}
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm font-medium text-blue-600 dark:text-blue-400">
+                                    {% blocktrans with days=scholarship.days_until_deadline|default:"45" %}
+                                    {{ days }} days left to apply
+                                    {% endblocktrans %}
+                                </span>
+                            </div>
+                            <span class="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                                {% trans "Urgent" %}
+                            </span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <a href="{% url 'scholarships:detail' scholarship.slug %}" 
+                       class="block w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg text-center transition duration-300 group-hover:shadow-lg">
+                        {% trans "Apply Now" %}
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Sample scholarships when no featured scholarships -->
+            {% for i in "1234" %}
+            <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <a href="#" class="block relative overflow-hidden">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Scholarship Image" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-block px-3 py-1 bg-green-500 text-white text-sm font-bold rounded-full">
+                                {% if i == "1" %}USA{% elif i == "2" %}UK{% elif i == "3" %}Germany{% else %}Canada{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                            {% if i == "1" %}MIT{% elif i == "2" %}Cambridge{% elif i == "3" %}TU Munich{% else %}University of Toronto{% endif %}
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                        <a href="#">
+                            {% if i == "1" %}{% trans "Fully Funded PhD Scholarship in AI Research" %}
+                            {% elif i == "2" %}{% trans "Engineering Excellence Scholarship for International Students" %}
+                            {% elif i == "3" %}{% trans "DAAD Scholarship for Master's in Renewable Energy" %}
+                            {% else %}{% trans "Canada Graduate Scholarships for STEM Fields" %}{% endif %}
+                        </a>
+                    </h3>
+                    
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center text-sm">
+                            <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-400">
+                                {% if i == "1" %}{% trans "PhD" %}{% elif i == "2" %}{% trans "Bachelor's" %}{% elif i == "3" %}{% trans "Master's" %}{% else %}{% trans "Master's/PhD" %}{% endif %}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center text-sm">
+                            <svg class="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-400">
+                                {% trans "Deadline:" %} {% if i == "1" %}Mar 15, 2024{% elif i == "2" %}Apr 30, 2024{% elif i == "3" %}May 20, 2024{% else %}Jun 10, 2024{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-sm font-medium text-blue-600 dark:text-blue-400">
+                                    {% blocktrans with days=i|add:"30" %}
+                                    {{ days }} days left to apply
+                                    {% endblocktrans %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#" 
+                       class="block w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg text-center transition duration-300 group-hover:shadow-lg">
+                        {% trans "Apply Now" %}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-16 bg-gradient-to-r from-primary-600 via-blue-600 to-indigo-600 dark:from-primary-800 dark:via-blue-800 dark:to-indigo-800 text-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="w-20 h-20 mx-auto bg-white/10 rounded-full flex items-center justify-center mb-6">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                {% trans "Stay Updated with Learning Opportunities" %}
+            </h2>
+            <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                {% trans "Subscribe to our newsletter and get the latest courses, scholarships, and educational content directly in your inbox." %}
+            </p>
+            
+            <form class="max-w-md mx-auto">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="email" 
+                           placeholder="{% trans 'Your email address' %}" 
+                           class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white">
+                    <button type="submit" 
+                            class="bg-white text-primary-600 hover:bg-gray-100 font-bold px-6 py-3 rounded-lg transition duration-300">
+                        {% trans "Subscribe" %}
+                    </button>
+                </div>
+                <p class="text-sm opacity-80 mt-3">
+                    {% trans "By subscribing, you agree to our Privacy Policy. You can unsubscribe at any time." %}
+                </p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                {% trans "Ready to Transform Your Future?" %}
+            </h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
+                {% trans "Join thousands of successful students who have already started their learning journey with us. Your future starts today!" %}
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                {% if not user.is_authenticated %}
+                <a href="{% url 'account_signup' %}" 
+                   class="group bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 text-lg font-medium rounded-lg transition duration-300 inline-flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                    <span>{% trans "Sign Up Free" %}</span>
+                </a>
+                {% endif %}
+                <a href="{% url 'courses:list' %}" 
+                   class="group border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 text-lg font-medium rounded-lg transition duration-300 inline-flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    <span>{% trans "Browse Courses" %}</span>
+                </a>
+                <a href="{% url 'scholarships:list' %}" 
+                   class="group border-2 border-green-600 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 px-8 py-4 text-lg font-medium rounded-lg transition duration-300 inline-flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>{% trans "Find Scholarships" %}</span>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">100%</div>
+                    <div class="text-gray-600 dark:text-gray-400">{% trans "Satisfaction" %}</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">24/7</div>
+                    <div class="text-gray-600 dark:text-gray-400">{% trans "Support" %}</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">30-Day</div>
+                    <div class="text-gray-600 dark:text-gray-400">{% trans "Money Back" %}</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">4.8/5</div>
+                    <div class="text-gray-600 dark:text-gray-400">{% trans "Rating" %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes bounce-slow {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+    
+    @keyframes text-shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
+    
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-bounce-slow {
+        animation: bounce-slow 3s ease-in-out infinite;
+    }
+    
+    .animate-text span {
+        background: linear-gradient(90deg, #fff 0%, #fbbf24 50%, #fff 100%);
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: text-shimmer 3s linear infinite;
+    }
+    
+    .counter {
+        display: inline-block;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // GSAP Animations for Home Page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hero section animation
+        gsap.from('.hero-content', {
+            duration: 1.5,
+            y: 50,
+            opacity: 0,
+            ease: "power3.out"
+        });
+        
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target') || counter.textContent.replace('+', ''));
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            
+            let current = 0;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                counter.textContent = Math.floor(current).toLocaleString() + '+';
+            }, 16);
+        });
+        
+        // Cards animation with stagger
+        gsap.from('.course-card, article, .bg-white', {
+            duration: 1,
+            y: 30,
+            opacity: 1,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: 'section',
+                start: 'top 85%',
+            }
+        });
+        
+        // Learning paths animation
+        gsap.from('.bg-gradient-to-br', {
+            duration: 1,
+            y: 30,
+            opacity: 1,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: '.grid-cols-1',
+                start: 'top 80%',
+            }
+        });
+        
+        // Testimonials animation
+        gsap.from('.relative .bg-white', {
+            duration: 1,
+            y: 30,
+            opacity: 1,
+            stagger: 0.15,
+            scrollTrigger: {
+                trigger: '.grid-cols-3',
+                start: 'top 80%',
+            }
+        });
+        
+        // Newsletter animation
+        gsap.from('.max-w-4xl', {
+            duration: 1,
+            y: 30,
+            opacity: 1,
+            scrollTrigger: {
+                trigger: '.bg-gradient-to-r',
+                start: 'top 85%',
+            }
+        });
+        
+        // Final CTA animation
+        gsap.from('.max-w-4xl.text-center', {
+            duration: 1,
+            y: 30,
+            opacity: 1,
+            scrollTrigger: {
+                trigger: '.bg-gradient-to-b',
+                start: 'top 85%',
+            }
+        });
+        
+        // Hover animations for cards
+        const cards = document.querySelectorAll('.group');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card, {
+                    duration: 0.3,
+                    scale: 1.02,
+                    ease: "power2.out"
+                });
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    duration: 0.3,
+                    scale: 1,
+                    ease: "power2.out"
+                });
+            });
+        });
+        
+        // Scroll to top button
+        const scrollToTop = document.createElement('button');
+        scrollToTop.innerHTML = `
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+            </svg>
+        `;
+        scrollToTop.className = 'fixed bottom-8 right-8 bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-full shadow-lg transition duration-300 opacity-1 invisible z-50';
+        scrollToTop.id = 'scrollToTop';
+        document.body.appendChild(scrollToTop);
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTop.classList.remove('opacity-1', 'invisible');
+                scrollToTop.classList.add('opacity-100', 'visible');
+            } else {
+                scrollToTop.classList.remove('opacity-100', 'visible');
+                scrollToTop.classList.add('opacity-1', 'invisible');
+            }
+        });
+        
+        scrollToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+    
+    // Newsletter form submission
+    const newsletterForm = document.querySelector('form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            
+            if (email) {
+                // Show success message
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                toast.textContent = '{% trans "Thank you for subscribing!" %}';
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+                
+                this.reset();
+            }
+        });
+    }
+</script>
+{% endblock %}

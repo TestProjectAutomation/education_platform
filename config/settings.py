@@ -1,15 +1,9 @@
-
-
 import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-@2+s3+#awwel_e0u(j!e@==pl2d+xome9lz9^8$)goqeq6@685'
@@ -23,6 +17,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,6 +75,7 @@ TEMPLATES = [
                 'core.context_processors.site_settings',
                 'core.context_processors.language_processor',
                 'core.context_processors.dark_mode_processor',
+                'core.context_processors.theme_settings',  # أضف هذا السطر
             ],
         },
     },
@@ -87,6 +83,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+    
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

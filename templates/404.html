@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Page Not Found" %} - {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full text-center">
+        <h1 class="text-9xl font-bold text-primary-600 dark:text-primary-400 mb-4">404</h1>
+        
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            {% trans "Page Not Found" %}
+        </h2>
+        
+        <p class="text-gray-600 dark:text-gray-400 mb-8">
+            {% trans "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable." %}
+        </p>
+        
+        <div class="space-y-4">
+            <a href="{% url 'home' %}" class="btn-primary block">
+                {% trans "Go to Homepage" %}
+            </a>
+            
+            <button onclick="window.history.back()" 
+                    class="w-full border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium py-3 px-4 rounded-lg transition duration-300">
+                {% trans "Go Back" %}
+            </button>
+        </div>
+        
+        <!-- Search Form -->
+        <div class="mt-8">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                {% trans "Search our site" %}
+            </h3>
+            <form action="{% url 'core:search' %}" method="get" class="flex">
+                <input type="text" name="q" 
+                       class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700"
+                       placeholder="{% trans 'Search...' %}">
+                <button type="submit" 
+                        class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-r-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

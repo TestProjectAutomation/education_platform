@@ -5,7 +5,8 @@ from core.models import BaseContent, Category
 class Article(BaseContent):
     reading_time = models.PositiveIntegerField(_('Reading Time (minutes)'), default=5)
     tags = models.ManyToManyField('Tag', blank=True)
-    
+    is_featured = models.BooleanField(default=False)
+
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')

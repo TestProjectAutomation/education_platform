@@ -88,3 +88,25 @@ def active_advertisements(request):
         cache.set(ads_cache_key, ads_dict, 60)  # تخزين لمدة دقيقة
     
     return {'active_ads': ads or {}}
+
+
+
+def theme_settings(request):
+    """إعدادات السمة للقالب"""
+    # التحقق من وضع الظلام
+    dark_mode = False
+    
+    # 1. التحقق من المستخدم المسجل
+    if request.user.is_authenticated:
+        dark_mode = getattr(request.user, 'dark_mode', False)
+    # 2. التحقق من الجلسة
+    elif 'dark_mode' in request.session:
+        dark_mode = request.session.get('dark_mode', False)
+    # 3. التحقق من الكوكيز
+    elif 'dark_mode' in request.COOKIES:
+        dark_mode = request.COOKIES.get('dark_mode') == 'true'
+    
+    return {
+        'is_dark_mode': dark_mode,
+        'site_settings': request.site_settings if hasattr(request, 'site_settings') else None
+    }

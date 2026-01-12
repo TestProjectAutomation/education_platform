@@ -18,7 +18,8 @@ class Book(BaseContent):
     download_link = models.URLField(_('Download Link'), blank=True)
     file = models.FileField(_('File'), upload_to='books/', blank=True, null=True)
     preview_pages = models.PositiveIntegerField(_('Preview Pages'), default=10)
-    
+    is_featured = models.BooleanField(default=False)
+
     class Meta:
         verbose_name = _('Book')
         verbose_name_plural = _('Books')

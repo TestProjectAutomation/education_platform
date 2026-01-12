@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Server Error" %} - {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full text-center">
+        <h1 class="text-9xl font-bold text-red-600 dark:text-red-400 mb-4">500</h1>
+        
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            {% trans "Internal Server Error" %}
+        </h2>
+        
+        <p class="text-gray-600 dark:text-gray-400 mb-8">
+            {% trans "Oops! Something went wrong on our end. We're working to fix the issue. Please try again later." %}
+        </p>
+        
+        <div class="space-y-4">
+            <a href="{% url 'home' %}" class="btn-primary block">
+                {% trans "Go to Homepage" %}
+            </a>
+            
+            <a href="{% url 'core:contact' %}" 
+               class="w-full border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium py-3 px-4 rounded-lg transition duration-300 block">
+                {% trans "Contact Support" %}
+            </a>
+        </div>
+        
+        <!-- Report Error -->
+        <div class="mt-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+            <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-300 mb-2">
+                {% trans "Report this error" %}
+            </h3>
+            <p class="text-sm text-yellow-700 dark:text-yellow-400">
+                {% trans "If the problem persists, please contact our support team with details about what you were trying to do." %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
