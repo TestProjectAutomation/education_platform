@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static i18n %}
+<html lang="{{ request.LANGUAGE_CODE }}" dir="{% if request.LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}" class="{% if request.user.dark_mode %}dark{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_settings.site_name }}{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{{ site_settings.favicon.url }}" type="image/x-icon">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.0/gsap.min.js"></script>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    
+    <!-- Header -->
+    {% include 'partials/header.html' %}
+    
+    <!-- Mobile Menu -->
+    {% include 'partials/mobile_menu.html' %}
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    {% include 'partials/footer.html' %}
+    
+    <!-- Advertisements -->
+    {% include 'advertisements/ads_placement.html' %}
+    
+    <!-- JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('click', function() {
+                document.documentElement.classList.toggle('dark');
+                // Send AJAX request to update user preference
+                fetch("{% url 'accounts:toggle_dark_mode' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({dark_mode: document.documentElement.classList.contains('dark')})
+                });
+            });
+        }
+    </script>
+</body>
+</html>

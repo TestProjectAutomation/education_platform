@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Courses" %} - {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <div class="hero-content mb-12 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
+            {% trans "Learn New Skills Online" %}
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+            {% trans "Browse our collection of courses designed to help you grow professionally and personally." %}
+        </p>
+        
+        <!-- Search and Filter -->
+        <div class="max-w-2xl mx-auto mb-8">
+            <form method="get" class="flex gap-4">
+                <input type="text" name="q" placeholder="{% trans 'Search courses...' %}" 
+                       value="{{ request.GET.q }}"
+                       class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700">
+                <select name="level" class="px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700">
+                    <option value="">{% trans "All Levels" %}</option>
+                    <option value="beginner" {% if request.GET.level == 'beginner' %}selected{% endif %}>
+                        {% trans "Beginner" %}
+                    </option>
+                    <option value="intermediate" {% if request.GET.level == 'intermediate' %}selected{% endif %}>
+                        {% trans "Intermediate" %}
+                    </option>
+                    <option value="advanced" {% if request.GET.level == 'advanced' %}selected{% endif %}>
+                        {% trans "Advanced" %}
+                    </option>
+                </select>
+                <button type="submit" class="btn-primary px-6">
+                    {% trans "Search" %}
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Featured Courses -->
+    {% if featured_courses %}
+    <div class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+            {% trans "Featured Courses" %}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for course in featured_courses %}
+                {% include 'courses/partials/course_card.html' with course=course featured=True %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- All Courses -->
+    <div>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+                {% trans "All Courses" %}
+            </h2>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-600 dark:text-gray-300">
+                    {% trans "Sort by:" %}
+                </span>
+                <select id="sortSelect" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700">
+                    <option value="newest">{% trans "Newest First" %}</option>
+                    <option value="popular">{% trans "Most Popular" %}</option>
+                    <option value="rating">{% trans "Highest Rated" %}</option>
+                    <option value="price_low">{% trans "Price: Low to High" %}</option>
+                    <option value="price_high">{% trans "Price: High to Low" %}</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="coursesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for course in courses %}
+                {% include 'courses/partials/course_card.html' with course=course %}
+            {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <svg class="w-24 h-24 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                        {% trans "No courses found" %}
+                    </h3>
+                    <p class="text-gray-500 dark:text-gray-500">
+                        {% trans "Try adjusting your search or filter criteria." %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="mt-12 flex justify-center">
+            <nav class="inline-flex rounded-md shadow">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                       class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                        {% trans "Previous" %}
+                    </a>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="px-4 py-2 border-t border-b border-gray-300 dark:border-gray-600 bg-primary-600 text-white">
+                            {{ num }}
+                        </span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?page={{ num }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                           class="px-4 py-2 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700">
+                            {{ num }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% for key,value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                       class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-r-lg hover:bg-gray-50 dark:hover:bg-gray-700">
+                        {% trans "Next" %}
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Statistics -->
+    <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="card text-center">
+            <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2" data-counter data-target="{{ total_courses }}">0</div>
+            <div class="text-gray-600 dark:text-gray-400">{% trans "Total Courses" %}</div>
+        </div>
+        <div class="card text-center">
+            <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2" data-counter data-target="{{ total_enrollments }}">0</div>
+            <div class="text-gray-600 dark:text-gray-400">{% trans "Total Enrollments" %}</div>
+        </div>
+        <div class="card text-center">
+            <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2" data-counter data-target="{{ total_instructors }}">0</div>
+            <div class="text-gray-600 dark:text-gray-400">{% trans "Expert Instructors" %}</div>
+        </div>
+        <div class="card text-center">
+            <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2" data-counter data-target="{{ average_rating }}">0</div>
+            <div class="text-gray-600 dark:text-gray-400">{% trans "Average Rating" %}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Advertisement -->
+<div class="container mx-auto px-4 mb-8">
+    {% include 'advertisements/ads_placement.html' with placement='between_posts' %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Sort courses
+    document.getElementById('sortSelect').addEventListener('change', function() {
+        const sortBy = this.value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort', sortBy);
+        window.location.href = url.toString();
+    });
+    
+    // Set current sort value
+    const currentSort = new URLSearchParams(window.location.search).get('sort') || 'newest';
+    document.getElementById('sortSelect').value = currentSort;
+    
+    // Course card hover animation
+    const courseCards = document.querySelectorAll('.course-card');
+    courseCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            gsap.to(card, {
+                duration: 0.3,
+                y: -5,
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                ease: "power2.out"
+            });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+                duration: 0.3,
+                y: 0,
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+                ease: "power2.out"
+            });
+        });
+    });
+</script>
+{% endblock %}
