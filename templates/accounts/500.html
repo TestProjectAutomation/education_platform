@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Server Error" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="mb-5">
+                <div class="text-danger mb-4">
+                    <i class="fas fa-server fa-5x"></i>
+                </div>
+                <h1 class="display-1 fw-bold text-danger">500</h1>
+                <h2 class="mb-4">{% trans "Internal Server Error" %}</h2>
+                <p class="lead text-muted mb-4">
+                    {% trans "Sorry, something went wrong on our end. Our team has been notified and is working to fix the issue." %}
+                </p>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                <i class="fas fa-redo fa-2x text-primary"></i>
+                            </div>
+                            <h5 class="card-title">{% trans "Try Again" %}</h5>
+                            <p class="card-text text-muted small">{% trans "Refresh the page and try again" %}</p>
+                            <button onclick="location.reload()" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-redo me-2"></i>
+                                {% trans "Refresh Page" %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                <i class="fas fa-home fa-2x text-success"></i>
+                            </div>
+                            <h5 class="card-title">{% trans "Go Home" %}</h5>
+                            <p class="card-text text-muted small">{% trans "Return to the homepage" %}</p>
+                            <a href="{% url 'core:home' %}" class="btn btn-outline-success w-100">
+                                {% trans "Homepage" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm mt-5">
+                <div class="card-body p-4">
+                    <h5 class="mb-3">{% trans "What to do next?" %}</h5>
+                    <ul class="text-start">
+                        <li class="mb-2">{% trans "Try refreshing the page in a few minutes" %}</li>
+                        <li class="mb-2">{% trans "Clear your browser cache and cookies" %}</li>
+                        <li class="mb-2">{% trans "Try using a different browser" %}</li>
+                        <li class="mb-2">{% trans "Check our status page for system updates" %}</li>
+                        <li>{% trans "If the problem persists, contact our support team" %}</li>
+                    </ul>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>{% trans "Technical Details:" %}</strong> 
+                        {% trans "Error reference:" %} <code>{{ request.path }}</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

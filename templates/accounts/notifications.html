@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Notifications" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0">
+                <i class="fas fa-bell me-2 text-primary"></i>
+                {% trans "Notifications" %}
+            </h1>
+            <p class="text-muted mb-0">
+                {% trans "Stay updated with your learning journey" %}
+            </p>
+        </div>
+        <div>
+            <form method="post" action="{% url 'accounts:mark_all_notifications_read' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-check-double me-2"></i>
+                    {% trans "Mark All Read" %}
+                </button>
+            </form>
+            <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary">
+                <i class="fas fa-arrow-left me-2"></i>
+                {% trans "Back to Dashboard" %}
+            </a>
+        </div>
+    </div>
+    
+    {% if unread_count > 0 %}
+    <div class="alert alert-info d-flex align-items-center mb-4">
+        <i class="fas fa-info-circle fa-2x me-3"></i>
+        <div>
+            <h5 class="alert-heading mb-1">{% trans "You have" %} {{ unread_count }} {% trans "unread notifications" %}</h5>
+            <p class="mb-0">{% trans "Click on any notification to mark it as read" %}</p>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            {% if notifications %}
+            <div class="list-group list-group-flush">
+                {% for notification in notifications %}
+                <div class="list-group-item border-0 py-3 px-4 {% if not notification.is_read %}bg-light{% endif %}">
+                    <div class="d-flex align-items-start">
+                        <div class="flex-shrink-0 me-3">
+                            <div class="bg-{{ notification.notification_type }} bg-opacity-10 rounded-circle p-3">
+                                <i class="fas fa-{{ notification.icon|default:'bell' }} fa-lg text-{{ notification.notification_type }}"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h5 class="mb-0">{{ notification.title }}</h5>
+                                <div class="d-flex align-items-center">
+                                    <small class="text-muted me-3">
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ notification.created_at|timesince }} {% trans "ago" %}
+                                    </small>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary border-0" type="button" 
+                                                data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            {% if not notification.is_read %}
+                                            <li>
+                                                <form method="post" action="{% url 'accounts:mark_notification_read' notification.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="fas fa-check me-2"></i>
+                                                        {% trans "Mark as Read" %}
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            {% endif %}
+                                            <li>
+                                                <form method="post" action="{% url 'accounts:delete_notification' notification.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="dropdown-item text-danger">
+                                                        <i class="fas fa-trash me-2"></i>
+                                                        {% trans "Delete" %}
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-2">{{ notification.message }}</p>
+                            
+                            {% if notification.action_url %}
+                            <a href="{{ notification.action_url }}" class="btn btn-sm btn-outline-{{ notification.notification_type }}">
+                                <i class="fas fa-external-link-alt me-1"></i>
+                                {% trans "View" %}
+                            </a>
+                            {% endif %}
+                            
+                            {% if notification.expires_at %}
+                            <small class="text-muted d-block mt-2">
+                                <i class="fas fa-hourglass-end me-1"></i>
+                                {% trans "Expires:" %} {{ notification.expires_at|date:"M d, Y" }}
+                            </small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if notifications.has_other_pages %}
+            <nav class="px-4 py-3 border-top">
+                <ul class="pagination justify-content-center mb-0">
+                    {% if notifications.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ notifications.previous_page_number }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in notifications.paginator.page_range %}
+                        {% if notifications.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% elif num > notifications.number|add:'-3' and num < notifications.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if notifications.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ notifications.next_page_number }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-bell-slash fa-4x text-muted"></i>
+                </div>
+                <h4 class="text-muted mb-3">{% trans "No Notifications" %}</h4>
+                <p class="text-muted mb-4">{% trans "You're all caught up! Check back later for new updates." %}</p>
+                <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    {% trans "Back to Dashboard" %}
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.list-group-item:hover {
+    background-color: var(--bs-light) !important;
+}
+.dropdown-menu {
+    min-width: 200px;
+}
+</style>
+{% endblock %}

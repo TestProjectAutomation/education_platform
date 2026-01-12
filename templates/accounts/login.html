@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Login" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-sign-in-alt me-2"></i>
+                        {% trans "Welcome Back!" %}
+                    </h2>
+                    <p class="mb-0 mt-2 opacity-75">{% trans "Sign in to continue your learning journey" %}</p>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">
+                                <i class="fas fa-user me-1"></i>
+                                {% trans "Username or Email" %}
+                            </label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label for="{{ form.password.id_for_label }}" class="form-label">
+                                    <i class="fas fa-lock me-1"></i>
+                                    {% trans "Password" %}
+                                </label>
+                                <a href="#" class="small text-decoration-none">{% trans "Forgot Password?" %}</a>
+                            </div>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            {{ form.remember_me }}
+                            <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">
+                                {% trans "Remember me" %}
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>
+                            {% trans "Sign In" %}
+                        </button>
+                        
+                        <div class="text-center mt-4">
+                            <p class="mb-2">{% trans "Don't have an account?" %}</p>
+                            <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i>
+                                {% trans "Create Account" %}
+                            </a>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="text-center">
+                            <p class="text-muted mb-3">{% trans "Or sign in with" %}</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <button type="button" class="btn btn-outline-danger">
+                                    <i class="fab fa-google"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-dark">
+                                    <i class="fab fa-github"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

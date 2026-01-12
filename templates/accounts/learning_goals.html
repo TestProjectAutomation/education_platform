@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Learning Goals" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-success text-white shadow-lg border-0">
+                <div class="card-body py-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="mb-3">
+                                <i class="fas fa-bullseye me-3"></i>
+                                {% trans "Learning Goals" %}
+                            </h1>
+                            <p class="mb-0 opacity-75">
+                                {% trans "Set goals, track progress, and achieve more in your learning journey" %}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="bg-white bg-opacity-25 rounded-circle d-inline-flex p-4">
+                                <i class="fas fa-target fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-success bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-success mb-2">{{ active_count }}</h2>
+                    <p class="text-muted mb-0">{% trans "Active" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-primary bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-primary mb-2">{{ completed_count }}</h2>
+                    <p class="text-muted mb-0">{% trans "Completed" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-warning bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-warning mb-2">{{ goals.count }}</h2>
+                    <p class="text-muted mb-0">{% trans "Total" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-info bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-info mb-2">0</h2>
+                    <p class="text-muted mb-0">{% trans "Overdue" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Create Goal Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="btn-group" role="group">
+            <a href="?status=active" class="btn btn-outline-primary {% if request.GET.status == 'active' or not request.GET.status %}active{% endif %}">
+                {% trans "Active" %}
+            </a>
+            <a href="?status=completed" class="btn btn-outline-success {% if request.GET.status == 'completed' %}active{% endif %}">
+                {% trans "Completed" %}
+            </a>
+            <a href="?status=failed" class="btn btn-outline-danger {% if request.GET.status == 'failed' %}active{% endif %}">
+                {% trans "Failed" %}
+            </a>
+            <a href="?status=paused" class="btn btn-outline-warning {% if request.GET.status == 'paused' %}active{% endif %}">
+                {% trans "Paused" %}
+            </a>
+            <a href="?" class="btn btn-outline-secondary {% if not request.GET.status %}active{% endif %}">
+                {% trans "All" %}
+            </a>
+        </div>
+        
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGoalModal">
+            <i class="fas fa-plus me-2"></i>
+            {% trans "New Goal" %}
+        </button>
+    </div>
+    
+    <!-- Goals List -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            {% if goals %}
+            <div class="list-group list-group-flush">
+                {% for goal in goals %}
+                <div class="list-group-item border-0 py-4 px-4">
+                    <div class="d-flex align-items-start">
+                        <div class="flex-shrink-0 me-4">
+                            <div class="bg-{% if goal.status == 'active' %}primary{% elif goal.status == 'completed' %}success{% elif goal.status == 'failed' %}danger{% else %}warning{% endif %} 
+                                      bg-opacity-10 rounded-circle p-3">
+                                <i class="fas fa-bullseye fa-2x text-{% if goal.status == 'active' %}primary{% elif goal.status == 'completed' %}success{% elif goal.status == 'failed' %}danger{% else %}warning{% endif %}"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h5 class="mb-1">{{ goal.title }}</h5>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-{% if goal.status == 'active' %}primary{% elif goal.status == 'completed' %}success{% elif goal.status == 'failed' %}danger{% else %}warning{% endif %} me-2">
+                                            {{ goal.get_status_display }}
+                                        </span>
+                                        {% if goal.target_date %}
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ goal.target_date|date:"M d, Y" }}
+                                            {% if goal.is_overdue %}
+                                            <span class="badge bg-danger ms-2">{% trans "Overdue" %}</span>
+                                            {% endif %}
+                                        </small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary border-0" type="button" 
+                                            data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <button class="dropdown-item" onclick="editGoal({{ goal.id }})">
+                                                <i class="fas fa-edit me-2"></i>
+                                                {% trans "Edit" %}
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <form method="post" action="{% url 'accounts:delete_learning_goal' goal.id %}" 
+                                                  onsubmit="return confirm('{% trans 'Are you sure you want to delete this goal?' %}')">
+                                                {% csrf_token %}
+                                                <button type="submit" class="dropdown-item text-danger">
+                                                    <i class="fas fa-trash me-2"></i>
+                                                    {% trans "Delete" %}
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            {% if goal.description %}
+                            <p class="mb-3">{{ goal.description }}</p>
+                            {% endif %}
+                            
+                            <!-- Progress -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small class="text-muted">{% trans "Progress" %}</small>
+                                    <small class="text-muted">{{ goal.progress_percentage }}%</small>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: {{ goal.progress_percentage }}%"
+                                         aria-valuenow="{{ goal.progress_percentage }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <small class="text-muted">
+                                    {{ goal.progress }} {% trans "of" %} {{ goal.total_items }} {% trans "items completed" %}
+                                </small>
+                            </div>
+                            
+                            <!-- Created info -->
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                {% trans "Created" %} {{ goal.created_at|timesince }} {% trans "ago" %}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-bullseye fa-4x text-muted"></i>
+                </div>
+                <h4 class="text-muted mb-3">{% trans "No Learning Goals Yet" %}</h4>
+                <p class="text-muted mb-4">
+                    {% if request.GET.status %}
+                    {% trans "No goals with this status. Try another filter or create a new goal." %}
+                    {% else %}
+                    {% trans "Set your first learning goal to track your progress and stay motivated." %}
+                    {% endif %}
+                </p>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGoalModal">
+                    <i class="fas fa-plus me-2"></i>
+                    {% trans "Create Your First Goal" %}
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Create Goal Modal -->
+<div class="modal fade" id="createGoalModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-bullseye me-2"></i>
+                    {% trans "Create New Learning Goal" %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="{% url 'accounts:create_learning_goal' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="goalTitle" class="form-label">{% trans "Goal Title" %} *</label>
+                        <input type="text" class="form-control" id="goalTitle" name="title" 
+                               placeholder="{% trans 'e.g., Complete Python Course' %}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="goalDescription" class="form-label">{% trans "Description" %}</label>
+                        <textarea class="form-control" id="goalDescription" name="description" 
+                                  rows="3" placeholder="{% trans 'Describe your goal...' %}"></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="targetDate" class="form-label">{% trans "Target Date" %}</label>
+                            <input type="date" class="form-control" id="targetDate" name="target_date">
+                            <div class="form-text">{% trans "Optional: Set a deadline for your goal" %}</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="goalStatus" class="form-label">{% trans "Status" %}</label>
+                            <select class="form-select" id="goalStatus" name="status">
+                                <option value="active" selected>{% trans "Active" %}</option>
+                                <option value="paused">{% trans "Paused" %}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        {% trans "Tip: Set SMART goals - Specific, Measurable, Achievable, Relevant, Time-bound" %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>
+                        {% trans "Create Goal" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Goal Modal -->
+<div class="modal fade" id="editGoalModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-edit me-2"></i>
+                    {% trans "Edit Learning Goal" %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editGoalForm">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" id="editGoalId" name="goal_id">
+                    
+                    <div class="mb-3">
+                        <label for="editGoalTitle" class="form-label">{% trans "Goal Title" %} *</label>
+                        <input type="text" class="form-control" id="editGoalTitle" name="title" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editGoalDescription" class="form-label">{% trans "Description" %}</label>
+                        <textarea class="form-control" id="editGoalDescription" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editTargetDate" class="form-label">{% trans "Target Date" %}</label>
+                            <input type="date" class="form-control" id="editTargetDate" name="target_date">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editGoalStatus" class="form-label">{% trans "Status" %}</label>
+                            <select class="form-select" id="editGoalStatus" name="status">
+                                <option value="active">{% trans "Active" %}</option>
+                                <option value="completed">{% trans "Completed" %}</option>
+                                <option value="failed">{% trans "Failed" %}</option>
+                                <option value="paused">{% trans "Paused" %}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editProgress" class="form-label">{% trans "Progress" %}</label>
+                        <div class="d-flex align-items-center">
+                            <input type="range" class="form-range flex-grow-1 me-3" id="editProgress" 
+                                   name="progress" min="0" max="100" value="0">
+                            <span id="progressValue">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>
+                        {% trans "Save Changes" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function editGoal(goalId) {
+    // You would fetch goal data via AJAX here
+    // For now, we'll show the modal with basic functionality
+    const modal = new bootstrap.Modal(document.getElementById('editGoalModal'));
+    document.getElementById('editGoalId').value = goalId;
+    
+    // Update progress slider display
+    const progressSlider = document.getElementById('editProgress');
+    const progressValue = document.getElementById('progressValue');
+    
+    progressSlider.addEventListener('input', function() {
+        progressValue.textContent = this.value + '%';
+    });
+    
+    modal.show();
+}
+
+// Handle edit form submission
+document.getElementById('editGoalForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const goalId = formData.get('goal_id');
+    
+    fetch(`/accounts/goals/${goalId}/update/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,19 +1,11 @@
 from django.shortcuts import render
 from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
-from courses.models import Course
 from articles.models import Article
 from scholarships.models import Scholarship
 from books.models import Book
 
-def home(request):
-    """الصفحة الرئيسية"""
-    # الكورسات المميزة
-    featured_courses = Course.objects.filter(
-        status='published',
-        is_featured=True
-    ).order_by('-created_at')[:6]
-    
+def home(request):    
     # المقالات المميزة
     featured_articles = Article.objects.filter(
         status='published',
@@ -34,7 +26,6 @@ def home(request):
     
     # الإحصائيات
     stats = {
-        'total_courses': Course.objects.filter(status='published').count(),
         'total_articles': Article.objects.filter(status='published').count(),
         'total_scholarships': Scholarship.objects.filter(status='published').count(),
         'total_books': Book.objects.filter(status='published').count(),
@@ -49,7 +40,6 @@ def home(request):
     }
 
     context = {
-        'featured_courses': featured_courses,
         'featured_articles': featured_articles,
         'featured_scholarships': featured_scholarships,
         'featured_books': featured_books,

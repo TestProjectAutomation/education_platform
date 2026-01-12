@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Settings" %} - {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">{% trans "Settings" %}</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Navigation -->
+            <div class="md:col-span-1">
+                <div class="card p-4">
+                    <nav class="space-y-2">
+                        <a href="{% url 'accounts:profile' %}" 
+                           class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                            {% trans "Profile" %}
+                        </a>
+                        <a href="{% url 'accounts:settings' %}" 
+                           class="block px-4 py-2 rounded bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400">
+                            {% trans "Preferences" %}
+                        </a>
+                        <a href="{% url 'accounts:notifications' %}" 
+                           class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                            {% trans "Notifications" %}
+                        </a>
+                        <a href="{% url 'accounts:activity' %}" 
+                           class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">
+                            {% trans "Activity" %}
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="md:col-span-2">
+                <!-- Notification Preferences -->
+                <div class="card mb-6">
+                    <h2 class="text-xl font-bold mb-4">{% trans "Notification Preferences" %}</h2>
+                    
+                    <form method="post" action="{% url 'accounts:settings' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_preferences">
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-medium">{% trans "Email Notifications" %}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                                        {% trans "Receive updates via email" %}
+                                    </p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="email_notifications" 
+                                           class="sr-only peer" {% if user.email_notifications %}checked{% endif %}>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-medium">{% trans "SMS Notifications" %}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                                        {% trans "Receive updates via SMS" %}
+                                    </p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="sms_notifications" 
+                                           class="sr-only peer" {% if user.sms_notifications %}checked{% endif %}>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-medium">{% trans "Newsletter" %}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                                        {% trans "Subscribe to our newsletter" %}
+                                    </p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="newsletter_subscription" 
+                                           class="sr-only peer" {% if user.newsletter_subscription %}checked{% endif %}>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button type="submit" class="btn-primary">
+                                {% trans "Save Preferences" %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Dark Mode Toggle -->
+                <div class="card">
+                    <h2 class="text-xl font-bold mb-4">{% trans "Display Settings" %}</h2>
+                    
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="font-medium">{% trans "Dark Mode" %}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                {% trans "Switch between light and dark theme" %}
+                            </p>
+                        </div>
+                        <button id="toggleDarkMode" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+                            {% trans "Toggle" %}
+                        </button>
+                    </div>
+                    
+                    <!-- Language Selector (if multilingual) -->
+                    {% if LANGUAGES|length > 1 %}
+                    <div>
+                        <h3 class="font-medium mb-2">{% trans "Language" %}</h3>
+                        <form action="{% url 'set_language' %}" method="post" class="flex items-center space-x-3">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ request.path }}">
+                            <select name="language" class="form-select" onchange="this.form.submit()">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% for lang in LANGUAGES %}
+                                <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                                    {{ lang.1 }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Dark mode toggle
+    document.getElementById('toggleDarkMode').addEventListener('click', function() {
+        fetch('{% url "accounts:toggle_dark_mode" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reload to apply changes
+                location.reload();
+            }
+        });
+    });
+</script>
+{% endblock %}

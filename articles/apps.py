@@ -4,4 +4,8 @@ from django.utils.translation import gettext_lazy as _
 class ArticlesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'articles'
-    verbose_name = _('Articles')
+    verbose_name = _('Articles Management')
+    
+    def ready(self):
+        # استيراد الإشارات
+        import articles.signals

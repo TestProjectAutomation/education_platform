@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Bookmarks" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-info text-white shadow-lg border-0">
+                <div class="card-body py-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="mb-3">
+                                <i class="fas fa-bookmark me-3"></i>
+                                {% trans "Bookmarks" %}
+                            </h1>
+                            <p class="mb-0 opacity-75">
+                                {% trans "Save and organize your favorite learning resources" %}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="bg-white bg-opacity-25 rounded-circle d-inline-flex p-4">
+                                <i class="fas fa-star fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filter Tabs -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group" role="group">
+                    <a href="?" class="btn btn-outline-primary {% if not request.GET.type %}active{% endif %}">
+                        {% trans "All" %}
+                        <span class="badge bg-primary ms-2">{{ bookmarks.count }}</span>
+                    </a>
+                    <a href="?type=course" class="btn btn-outline-success {% if request.GET.type == 'course' %}active{% endif %}">
+                        <i class="fas fa-book me-2"></i>
+                        {% trans "Courses" %}
+                        {% if bookmarks_by_type.course %}
+                        <span class="badge bg-success ms-2">{{ bookmarks_by_type.course|length }}</span>
+                        {% endif %}
+                    </a>
+                    <a href="?type=lesson" class="btn btn-outline-info {% if request.GET.type == 'lesson' %}active{% endif %}">
+                        <i class="fas fa-play-circle me-2"></i>
+                        {% trans "Lessons" %}
+                        {% if bookmarks_by_type.lesson %}
+                        <span class="badge bg-info ms-2">{{ bookmarks_by_type.lesson|length }}</span>
+                        {% endif %}
+                    </a>
+                    <a href="?type=article" class="btn btn-outline-warning {% if request.GET.type == 'article' %}active{% endif %}">
+                        <i class="fas fa-newspaper me-2"></i>
+                        {% trans "Articles" %}
+                        {% if bookmarks_by_type.article %}
+                        <span class="badge bg-warning ms-2">{{ bookmarks_by_type.article|length }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+                
+                <button type="button" class="btn btn-outline-secondary" id="organizeBookmarks">
+                    <i class="fas fa-folder me-2"></i>
+                    {% trans "Organize" %}
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bookmarks Grid -->
+    {% if bookmarks %}
+    <div class="row g-4">
+        {% if request.GET.type %}
+            <!-- Filtered by type -->
+            {% for bookmark in bookmarks %}
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100 bookmark-card" data-id="{{ bookmark.id }}">
+                    {% if bookmark.thumbnail %}
+                    <img src="{{ bookmark.thumbnail }}" class="card-img-top" alt="{{ bookmark.title }}" 
+                         style="height: 150px; object-fit: cover;">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                         style="height: 150px;">
+                        <i class="fas fa-{% if bookmark.content_type == 'course' %}book{% elif bookmark.content_type == 'lesson' %}play-circle{% elif bookmark.content_type == 'article' %}newspaper{% elif bookmark.content_type == 'video' %}video{% else %}question-circle{% endif %} fa-3x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-{% if bookmark.content_type == 'course' %}success{% elif bookmark.content_type == 'lesson' %}info{% elif bookmark.content_type == 'article' %}warning{% elif bookmark.content_type == 'video' %}danger{% else %}secondary{% endif %}">
+                                {{ bookmark.get_content_type_display }}
+                            </span>
+                            <button class="btn btn-sm btn-outline-danger border-0 remove-bookmark" 
+                                    data-id="{{ bookmark.id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        
+                        <h6 class="card-title mb-2">{{ bookmark.title }}</h6>
+                        
+                        <small class="text-muted d-block mb-3">
+                            <i class="fas fa-clock me-1"></i>
+                            {{ bookmark.created_at|timesince }} {% trans "ago" %}
+                        </small>
+                        
+                        <a href="{{ bookmark.url }}" class="btn btn-outline-primary btn-sm w-100" target="_blank">
+                            <i class="fas fa-external-link-alt me-2"></i>
+                            {% trans "View" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Grouped by type -->
+            {% for content_type, items in bookmarks_by_type.items %}
+            <div class="col-12 mb-5">
+                <h4 class="mb-4">
+                    <i class="fas fa-{% if content_type == 'course' %}book{% elif content_type == 'lesson' %}play-circle{% elif content_type == 'article' %}newspaper{% elif content_type == 'video' %}video{% else %}question-circle{% endif %} me-2"></i>
+                    {{ items.0.get_content_type_display }}
+                    <span class="badge bg-secondary ms-2">{{ items|length }}</span>
+                </h4>
+                
+                <div class="row g-4">
+                    {% for bookmark in items %}
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card border-0 shadow-sm h-100 bookmark-card" data-id="{{ bookmark.id }}">
+                            {% if bookmark.thumbnail %}
+                            <img src="{{ bookmark.thumbnail }}" class="card-img-top" alt="{{ bookmark.title }}" 
+                                 style="height: 150px; object-fit: cover;">
+                            {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                 style="height: 150px;">
+                                <i class="fas fa-{% if bookmark.content_type == 'course' %}book{% elif bookmark.content_type == 'lesson' %}play-circle{% elif bookmark.content_type == 'article' %}newspaper{% elif bookmark.content_type == 'video' %}video{% else %}question-circle{% endif %} fa-3x text-muted"></i>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-{% if bookmark.content_type == 'course' %}success{% elif bookmark.content_type == 'lesson' %}info{% elif bookmark.content_type == 'article' %}warning{% elif bookmark.content_type == 'video' %}danger{% else %}secondary{% endif %}">
+                                        {{ bookmark.get_content_type_display }}
+                                    </span>
+                                    <button class="btn btn-sm btn-outline-danger border-0 remove-bookmark" 
+                                            data-id="{{ bookmark.id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                                
+                                <h6 class="card-title mb-2">{{ bookmark.title }}</h6>
+                                
+                                <small class="text-muted d-block mb-3">
+                                    <i class="fas fa-clock me-1"></i>
+                                    {{ bookmark.created_at|timesince }} {% trans "ago" %}
+                                </small>
+                                
+                                <a href="{{ bookmark.url }}" class="btn btn-outline-primary btn-sm w-100" target="_blank">
+                                    <i class="fas fa-external-link-alt me-2"></i>
+                                    {% trans "View" %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+    {% if not request.GET.type and bookmarks_by_type|length == 0 %}
+    <div class="text-center py-5 border rounded">
+        <div class="mb-4">
+            <i class="fas fa-bookmark fa-4x text-muted"></i>
+        </div>
+        <h4 class="text-muted mb-3">{% trans "No Bookmarks Yet" %}</h4>
+        <p class="text-muted mb-4">{% trans "Start bookmarking your favorite courses, lessons, and articles to find them easily later." %}</p>
+        <a href="#" class="btn btn-primary">
+            <i class="fas fa-search me-2"></i>
+            {% trans "Explore Content" %}
+        </a>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div class="text-center py-5 border rounded">
+        <div class="mb-4">
+            <i class="fas fa-bookmark fa-4x text-muted"></i>
+        </div>
+        <h4 class="text-muted mb-3">{% trans "No Bookmarks Yet" %}</h4>
+        <p class="text-muted mb-4">
+            {% if request.GET.type %}
+            {% trans "No bookmarks of this type. Try another filter." %}
+            {% else %}
+            {% trans "Start bookmarking your favorite courses, lessons, and articles to find them easily later." %}
+            {% endif %}
+        </p>
+        <a href="#" class="btn btn-primary">
+            <i class="fas fa-search me-2"></i>
+            {% trans "Explore Content" %}
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Remove bookmark
+    document.querySelectorAll('.remove-bookmark').forEach(button => {
+        button.addEventListener('click', function() {
+            const bookmarkId = this.getAttribute('data-id');
+            const card = this.closest('.bookmark-card');
+            
+            if (confirm('{% trans "Are you sure you want to remove this bookmark?" %}')) {
+                fetch(`/accounts/bookmarks/${bookmarkId}/remove/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        card.style.opacity = '0.5';
+                        setTimeout(() => {
+                            card.remove();
+                            // Update counts
+                            updateBookmarkCounts();
+                        }, 300);
+                    }
+                });
+            }
+        });
+    });
+    
+    function updateBookmarkCounts() {
+        // You can implement logic to update badge counts here
+        location.reload(); // Simple reload for now
+    }
+});
+</script>
+{% endblock %}

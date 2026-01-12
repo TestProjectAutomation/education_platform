@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Activity Log" %} - {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">{% trans "Activity Log" %}</h1>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">{{ stats.total }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Total Activities" %}</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ stats.today }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Today" %}</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ stats.this_week }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "This Week" %}</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ stats.this_month }}</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "This Month" %}</div>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="card mb-8">
+            <form method="get" class="space-y-4 md:space-y-0 md:flex md:items-center md:space-x-4">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium mb-1">{% trans "Activity Type" %}</label>
+                    <select name="type" class="form-select">
+                        <option value="">{% trans "All Types" %}</option>
+                        {% for type_id, type_name in activity_types %}
+                        <option value="{{ type_id }}" {% if request.GET.type == type_id %}selected{% endif %}>
+                            {{ type_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-1">{% trans "From Date" %}</label>
+                    <input type="date" name="date_from" value="{{ request.GET.date_from }}" class="form-input">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-1">{% trans "To Date" %}</label>
+                    <input type="date" name="date_to" value="{{ request.GET.date_to }}" class="form-input">
+                </div>
+                
+                <div class="flex items-end space-x-2">
+                    <button type="submit" class="btn-primary">
+                        {% trans "Filter" %}
+                    </button>
+                    <a href="{% url 'accounts:activity' %}" class="btn-secondary">
+                        {% trans "Clear" %}
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Activities -->
+        <div class="card">
+            {% if activities %}
+            <div class="space-y-4">
+                {% for activity in activities %}
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-4 last:border-0 last:pb-0">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full 
+                                {% if activity.activity_type == 'login' %}bg-green-100 dark:bg-green-900
+                                {% elif activity.activity_type == 'course_complete' %}bg-blue-100 dark:bg-blue-900
+                                {% elif activity.activity_type == 'achievement' %}bg-yellow-100 dark:bg-yellow-900
+                                {% else %}bg-gray-100 dark:bg-gray-800{% endif %} 
+                                flex items-center justify-center">
+                                <i class="
+                                    {% if activity.activity_type == 'login' %}fas fa-sign-in-alt text-green-600 dark:text-green-400
+                                    {% elif activity.activity_type == 'course_complete' %}fas fa-graduation-cap text-blue-600 dark:text-blue-400
+                                    {% elif activity.activity_type == 'achievement' %}fas fa-trophy text-yellow-600 dark:text-yellow-400
+                                    {% else %}fas fa-history text-gray-600 dark:text-gray-400{% endif %} 
+                                "></i>
+                            </div>
+                        </div>
+                        
+                        <div class="mr-4 flex-1">
+                            <div class="flex justify-between">
+                                <p class="font-medium text-gray-900 dark:text-white">
+                                    {{ activity.get_activity_type_display }}
+                                </p>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ activity.created_at|date:"d/m/Y H:i" }}
+                                </span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mt-1">
+                                {{ activity.description }}
+                            </p>
+                            
+                            {% if activity.ip_address %}
+                            <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                <i class="fas fa-globe mr-1"></i>
+                                <span>{{ activity.ip_address }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if activities.has_other_pages %}
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <nav class="flex justify-center">
+                    <ul class="flex items-center space-x-2">
+                        {% if activities.has_previous %}
+                        <li>
+                            <a href="?page={{ activities.previous_page_number }}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" 
+                               class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                &laquo;
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for i in activities.paginator.page_range %}
+                        {% if activities.number == i %}
+                        <li>
+                            <span class="px-3 py-2 rounded-lg bg-primary-600 text-white">
+                                {{ i }}
+                            </span>
+                        </li>
+                        {% elif i > activities.number|add:'-3' and i < activities.number|add:'3' %}
+                        <li>
+                            <a href="?page={{ i }}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" 
+                               class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                {{ i }}
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        
+                        {% if activities.has_next %}
+                        <li>
+                            <a href="?page={{ activities.next_page_number }}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.date_from %}&date_from={{ request.GET.date_from }}{% endif %}{% if request.GET.date_to %}&date_to={{ request.GET.date_to }}{% endif %}" 
+                               class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
+                                &raquo;
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <div class="text-center py-12">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <i class="fas fa-history text-gray-400 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    {% trans "No activities found" %}
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% trans "Try adjusting your filters or check back later." %}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

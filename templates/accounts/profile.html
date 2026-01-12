@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Dashboard" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-primary text-white shadow-lg border-0">
+                <div class="card-body py-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="mb-3">{% trans "Welcome back," %} {{ user.get_display_name }}! 👋</h1>
+                            <p class="mb-0 opacity-75">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                {% trans "Today is" %} {{ current_date|date:"F j, Y" }}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="bg-white bg-opacity-25 rounded-circle d-inline-flex p-4">
+                                <i class="fas fa-graduation-cap fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats Row -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                {% trans "Total Points" %}
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.total_points }}</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <span class="text-success mr-2">
+                                    <i class="fas fa-arrow-up"></i> {{ stats.level }}
+                                </span>
+                                <span>{% trans "Level" %}</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-star fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                {% trans "Active Courses" %}
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.active_courses }}</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <span>{{ stats.completed_courses }}</span>
+                                <span>{% trans "completed" %}</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-book-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                {% trans "Achievements" %}
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.achievements }}</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <span class="text-info mr-2">
+                                    <i class="fas fa-trophy"></i>
+                                </span>
+                                <span>{{ achievements.count }} {% trans "unlocked" %}</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-trophy fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                {% trans "Learning Hours" %}
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.learning_hours }}</div>
+                            <div class="mt-2 mb-0 text-muted text-xs">
+                                <span class="text-success mr-2">
+                                    <i class="fas fa-fire"></i>
+                                </span>
+                                <span>{{ stats.streak_days }} {% trans "day streak" %}</span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+            <!-- Learning Goals -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-bullseye me-2"></i>
+                        {% trans "Learning Goals" %}
+                    </h6>
+                    <a href="{% url 'accounts:learning_goals' %}" class="btn btn-sm btn-outline-primary">
+                        {% trans "View All" %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if learning_goals %}
+                    <div class="list-group list-group-flush">
+                        {% for goal in learning_goals %}
+                        <div class="list-group-item border-0 px-0 py-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h6 class="mb-1">{{ goal.title }}</h6>
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {% if goal.target_date %}
+                                        {{ goal.target_date|date:"M d, Y" }}
+                                        {% else %}
+                                        {% trans "No deadline" %}
+                                        {% endif %}
+                                        • 
+                                        <span class="badge bg-{% if goal.status == 'active' %}primary{% elif goal.status == 'completed' %}success{% else %}warning{% endif %}">
+                                            {{ goal.get_status_display }}
+                                        </span>
+                                    </small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="progress mb-2" style="width: 150px; height: 8px;">
+                                        <div class="progress-bar bg-success" 
+                                             role="progressbar" 
+                                             style="width: {{ goal.progress_percentage }}%"
+                                             aria-valuenow="{{ goal.progress_percentage }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">{{ goal.progress_percentage }}% {% trans "complete" %}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-bullseye fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">{% trans "No Learning Goals Yet" %}</h5>
+                        <p class="text-muted mb-3">{% trans "Set your first learning goal to track your progress" %}</p>
+                        <a href="{% url 'accounts:learning_goals' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>
+                            {% trans "Create Goal" %}
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Recent Activities -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-history me-2"></i>
+                        {% trans "Recent Activities" %}
+                    </h6>
+                    <a href="{% url 'accounts:activity' %}" class="btn btn-sm btn-outline-primary">
+                        {% trans "View All" %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if recent_activities %}
+                    <div class="list-group list-group-flush">
+                        {% for activity in recent_activities %}
+                        <div class="list-group-item border-0 px-0 py-2">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3">
+                                        <i class="fas fa-{{ activity.activity_type }} text-primary fa-fw"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">{{ activity.description }}</h6>
+                                        <small class="text-muted">{{ activity.created_at|timesince }} {% trans "ago" %}</small>
+                                    </div>
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        {{ activity.get_activity_type_display }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">{% trans "No recent activities" %}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Notifications -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-bell me-2"></i>
+                        {% trans "Notifications" %}
+                        {% if notifications %}
+                        <span class="badge bg-danger ms-2">{{ notifications.count }}</span>
+                        {% endif %}
+                    </h6>
+                    <div>
+                        <a href="{% url 'accounts:notifications' %}" class="btn btn-sm btn-outline-primary me-2">
+                            {% trans "All" %}
+                        </a>
+                        <form method="post" action="{% url 'accounts:mark_all_notifications_read' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                {% trans "Mark All Read" %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if notifications %}
+                    <div class="list-group list-group-flush">
+                        {% for notification in notifications %}
+                        <a href="{% if notification.action_url %}{{ notification.action_url }}{% else %}#{% endif %}" 
+                           class="list-group-item list-group-item-action border-0 py-3 {% if not notification.is_read %}bg-light{% endif %}">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-{{ notification.notification_type }} bg-opacity-10 rounded-circle p-2 me-3">
+                                        <i class="fas fa-{{ notification.icon|default:'bell' }} text-{{ notification.notification_type }}"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">{{ notification.title }}</h6>
+                                        <small class="text-muted">{{ notification.created_at|timesince }}</small>
+                                    </div>
+                                    <p class="mb-0 text-muted small">{{ notification.message|truncatechars:60 }}</p>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-bell-slash fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">{% trans "No new notifications" %}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Achievements -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-trophy me-2"></i>
+                        {% trans "Recent Achievements" %}
+                    </h6>
+                    <a href="{% url 'accounts:achievements' %}" class="btn btn-sm btn-outline-primary">
+                        {% trans "View All" %}
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if achievements %}
+                    <div class="row g-3">
+                        {% for user_achievement in achievements %}
+                        <div class="col-6 text-center">
+                            <div class="p-3 border rounded">
+                                <div class="text-warning mb-2">
+                                    <i class="{{ user_achievement.achievement.icon|default:'fas fa-trophy' }} fa-2x"></i>
+                                </div>
+                                <h6 class="mb-1">{{ user_achievement.achievement.name }}</h6>
+                                <small class="text-muted d-block">{{ user_achievement.unlocked_at|date:"M d" }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-3">
+                        <i class="fas fa-trophy fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">{% trans "No achievements yet" %}</p>
+                        <p class="small text-muted">{% trans "Complete courses to earn achievements" %}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-pie me-2"></i>
+                        {% trans "Quick Stats" %}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 px-0 py-2 d-flex justify-content-between">
+                            <span>{% trans "Profile Completion" %}</span>
+                            <span class="fw-bold">{{ profile_completion }}%</span>
+                        </div>
+                        <div class="list-group-item border-0 px-0 py-2 d-flex justify-content-between">
+                            <span>{% trans "Bookmarks" %}</span>
+                            <span class="fw-bold">{{ bookmarks.count }}</span>
+                        </div>
+                        <div class="list-group-item border-0 px-0 py-2 d-flex justify-content-between">
+                            <span>{% trans "Active Goals" %}</span>
+                            <span class="fw-bold">{{ learning_goals.count }}</span>
+                        </div>
+                        <div class="list-group-item border-0 px-0 py-2 d-flex justify-content-between">
+                            <span>{% trans "Certificates" %}</span>
+                            <span class="fw-bold">{{ stats.certificates }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

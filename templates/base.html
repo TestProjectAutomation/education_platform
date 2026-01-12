@@ -249,7 +249,9 @@
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary-600 text-white px-4 py-2 rounded-lg z-50">
         {% trans "تخطي إلى المحتوى الرئيسي" %}
     </a>
-    
+    <!-- top header -->
+    {% include 'partials/topheader.html' %}
+
     <!-- Header -->
     {% include 'partials/header.html' %}
     
@@ -257,7 +259,7 @@
     {% include 'partials/mobile_menu.html' %}
     
     <!-- Main Content -->
-    <main id="main-content" class="container mx-auto px-4 py-8">
+    <main id="main-content">
         <!-- Breadcrumbs -->
         {% block breadcrumbs %}
         {% if breadcrumbs %}
@@ -468,9 +470,9 @@
     <!-- JavaScript -->
     <script src="{% static 'js/main.js' %}"></script>
     
-    <!-- Vendor Scripts -->
+     <!-- Vendor Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
-    
+
     <!-- Main JavaScript -->
     <script>
         // Wait for DOM to be fully loaded
@@ -593,7 +595,7 @@
                     const csrfToken = formData.get('csrfmiddlewaretoken');
                     
                     try {
-                        const response = await fetch("#", {
+                        const response = await fetch("", {
                             method: 'POST',
                             headers: {
                                 'X-CSRFToken': csrfToken,
@@ -633,27 +635,28 @@
             window.addEventListener('offline', function() {
                 showNotification('{% trans "فقدت الاتصال بالإنترنت" %}', 'warning');
             });
-            
-            // Auto-hide header on scroll
-            let lastScrollTop = 0;
-            const header = document.querySelector('header');
-            
-            if (header) {
-                window.addEventListener('scroll', () => {
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    
-                    if (scrollTop > lastScrollTop && scrollTop > 100) {
-                        // Scrolling down
-                        header.style.transform = 'translateY(-100%)';
-                    } else {
-                        // Scrolling up
-                        header.style.transform = 'translateY(0)';
-                    }
-                    
-                    lastScrollTop = scrollTop;
-                });
-            }
-        });
+        // Optional: Add slight shadow on scroll
+if (header) {
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 20) {
+            header.classList.add('shadow-lg');
+            header.style.backdropFilter = 'blur(10px)';
+        } else {
+            header.classList.remove('shadow-lg');
+            header.style.backdropFilter = 'blur(5px)';
+        }
+        
+        // فقط قم بإغلاق الـ dropdowns عند التمرير
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            closeAllDropdowns();
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+}
+
         
         // Dark mode toggle functionality
         const darkModeToggle = document.getElementById('darkModeToggle');
@@ -820,6 +823,434 @@
     </script>
     
     {% block extra_js %}{% endblock %}
+    
+    <!-- Main JavaScript -->
+        <script>
+                // Wait for DOM to be fully loaded
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Hide loading overlay
+                    const loadingOverlay = document.getElementById('loadingOverlay');
+                    if (loadingOverlay) {
+                        setTimeout(() => {
+                            loadingOverlay.style.opacity = '0';
+                            setTimeout(() => {
+                                loadingOverlay.style.display = 'none';
+                            }, 500);
+                        }, 500);
+                    }
+                    
+                    // Initialize dropdowns
+                    initializeDropdowns();
+                    
+                    // Initialize GSAP ScrollTrigger
+                    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                        gsap.registerPlugin(ScrollTrigger);
+                        
+                        // Animate elements on scroll
+                        gsap.utils.toArray('.animate-on-scroll').forEach(element => {
+                            gsap.from(element, {
+                                scrollTrigger: {
+                                    trigger: element,
+                                    start: 'top 80%',
+                                    toggleActions: 'play none none reverse'
+                                },
+                                y: 50,
+                                opacity: 0,
+                                duration: 1,
+                                ease: 'power3.out'
+                            });
+                        });
+                    }
+                    
+                    // Back to top functionality
+                    const backToTop = document.getElementById('backToTop');
+                    if (backToTop) {
+                        window.addEventListener('scroll', () => {
+                            if (window.pageYOffset > 300) {
+                                backToTop.classList.remove('opacity-0', 'invisible');
+                                backToTop.classList.add('opacity-100', 'visible');
+                            } else {
+                                backToTop.classList.remove('opacity-100', 'visible');
+                                backToTop.classList.add('opacity-0', 'invisible');
+                            }
+                        });
+                        
+                        backToTop.addEventListener('click', () => {
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
+                        });
+                    }
+                    
+                    // Support modal functionality
+                    const supportButton = document.getElementById('supportButton');
+                    const supportModal = document.getElementById('supportModal');
+                    const closeSupportModal = document.getElementById('closeSupportModal');
+                    
+                    if (supportButton && supportModal && closeSupportModal) {
+                        supportButton.addEventListener('click', () => {
+                            // Close all other dropdowns first
+                            closeAllDropdowns();
+                            supportModal.classList.remove('hidden');
+                            gsap.from(supportModal.querySelector('div'), {
+                                duration: 0.3,
+                                scale: 0.9,
+                                opacity: 0,
+                                ease: 'back.out(1.7)'
+                            });
+                        });
+                        
+                        closeSupportModal.addEventListener('click', () => {
+                            supportModal.classList.add('hidden');
+                        });
+                        
+                        supportModal.addEventListener('click', (e) => {
+                            if (e.target === supportModal) {
+                                supportModal.classList.add('hidden');
+                            }
+                        });
+                    }
+                    
+                    // Chatbot functionality
+                    const chatbotButton = document.getElementById('chatbotButton');
+                    const chatbotWidget = document.getElementById('chatbotWidget');
+                    const closeChatbot = document.getElementById('closeChatbot');
+                    
+                    if (chatbotButton && chatbotWidget && closeChatbot) {
+                        chatbotButton.addEventListener('click', () => {
+                            // Close all other dropdowns first
+                            closeAllDropdowns();
+                            chatbotWidget.classList.toggle('hidden');
+                            if (!chatbotWidget.classList.contains('hidden')) {
+                                gsap.from(chatbotWidget, {
+                                    duration: 0.3,
+                                    y: 20,
+                                    opacity: 0,
+                                    ease: 'back.out(1.7)'
+                                });
+                            }
+                        });
+                        
+                        closeChatbot.addEventListener('click', () => {
+                            chatbotWidget.classList.add('hidden');
+                        });
+                    }
+                    
+                    // Lazy loading images
+                    if (typeof lazySizes !== 'undefined') {
+                        lazySizes.init();
+                    }
+                    
+                    // Newsletter subscription
+                    const newsletterForm = document.getElementById('newsletterForm');
+                    if (newsletterForm) {
+                        newsletterForm.addEventListener('submit', async function(e) {
+                            e.preventDefault();
+                            
+                            const formData = new FormData(this);
+                            const email = formData.get('email');
+                            const csrfToken = formData.get('csrfmiddlewaretoken');
+                            
+                            try {
+                                const response = await fetch("#", {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRFToken': csrfToken,
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({email: email})
+                                });
+                                
+                                const data = await response.json();
+                                
+                                if (data.success) {
+                                    showNotification('{% trans "تم الاشتراك بنجاح! شكراً لك." %}', 'success');
+                                    newsletterForm.reset();
+                                } else {
+                                    showNotification(data.message || '{% trans "حدث خطأ أثناء الاشتراك." %}', 'error');
+                                }
+                            } catch (error) {
+                                showNotification('{% trans "حدث خطأ في الاتصال. حاول مرة أخرى." %}', 'error');
+                            }
+                        });
+                    }
+                    
+                    // Service Worker Registration (PWA)
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        }).catch(function(error) {
+                            console.log('Service Worker registration failed:', error);
+                        });
+                    }
+                    
+                    // Network status detection
+                    window.addEventListener('online', function() {
+                        showNotification('{% trans "تم استعادة الاتصال بالإنترنت" %}', 'success');
+                    });
+                    
+                    window.addEventListener('offline', function() {
+                        showNotification('{% trans "فقدت الاتصال بالإنترنت" %}', 'warning');
+                    });
+                    
+                    // Auto-hide header on scroll
+                    let lastScrollTop = 0;
+                    const header = document.querySelector('header');
+                    
+                    if (header) {
+                        window.addEventListener('scroll', () => {
+                            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                            
+                            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                                // Scrolling down - also close any open dropdowns
+                                header.style.transform = 'translateY(-100%)';
+                                closeAllDropdowns();
+                            } else {
+                                // Scrolling up
+                                header.style.transform = 'translateY(0)';
+                            }
+                            
+                            lastScrollTop = scrollTop;
+                        });
+                    }
+                    
+                    // Click outside to close dropdowns
+                    document.addEventListener('click', function(event) {
+                        const dropdowns = document.querySelectorAll('[data-dropdown]');
+                        dropdowns.forEach(dropdown => {
+                            const toggle = dropdown.querySelector('[data-dropdown-toggle]');
+                            const content = dropdown.querySelector('[data-dropdown-content]');
+                            
+                            if (toggle && content && 
+                                !toggle.contains(event.target) && 
+                                !content.contains(event.target)) {
+                                content.classList.add('hidden');
+                                toggle.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+                    });
+                });
+                
+                // Dropdown management functions
+                function initializeDropdowns() {
+                    const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+                    
+                    dropdownToggles.forEach(toggle => {
+                        toggle.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const dropdown = this.closest('[data-dropdown]');
+                            const content = dropdown.querySelector('[data-dropdown-content]');
+                            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                            
+                            // Close all other dropdowns
+                            closeAllDropdownsExcept(dropdown);
+                            
+                            // Toggle current dropdown
+                            if (content) {
+                                content.classList.toggle('hidden');
+                                this.setAttribute('aria-expanded', !isExpanded);
+                            }
+                        });
+                    });
+                }
+                
+                function closeAllDropdowns() {
+                    const dropdownContents = document.querySelectorAll('[data-dropdown-content]');
+                    const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+                    
+                    dropdownContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    dropdownToggles.forEach(toggle => {
+                        toggle.setAttribute('aria-expanded', 'false');
+                    });
+                }
+                
+                function closeAllDropdownsExcept(currentDropdown) {
+                    const allDropdowns = document.querySelectorAll('[data-dropdown]');
+                    
+                    allDropdowns.forEach(dropdown => {
+                        if (dropdown !== currentDropdown) {
+                            const content = dropdown.querySelector('[data-dropdown-content]');
+                            const toggle = dropdown.querySelector('[data-dropdown-toggle]');
+                            
+                            if (content) {
+                                content.classList.add('hidden');
+                            }
+                            if (toggle) {
+                                toggle.setAttribute('aria-expanded', 'false');
+                            }
+                        }
+                    });
+                }
+                
+                // Dark mode toggle functionality
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                if (darkModeToggle) {
+                    darkModeToggle.addEventListener('click', function() {
+                        const isDark = document.documentElement.classList.contains('dark');
+                        document.documentElement.classList.toggle('dark');
+                        
+                        // Update icons
+                        const sunIcon = document.getElementById('sunIcon');
+                        const moonIcon = document.getElementById('moonIcon');
+                        
+                        if (isDark) {
+                            sunIcon.classList.remove('hidden');
+                            moonIcon.classList.add('hidden');
+                        } else {
+                            sunIcon.classList.add('hidden');
+                            moonIcon.classList.remove('hidden');
+                        }
+                        
+                        // Send AJAX request to update user preference
+                        fetch("{% url 'accounts:toggle_dark_mode' %}", {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({dark_mode: !isDark})
+                        }).then(response => {
+                            if (!response.ok) {
+                                // إذا فشل AJAX، احفظ في localStorage
+                                localStorage.setItem('dark_mode', !isDark);
+                            }
+                        }).catch(error => {
+                            localStorage.setItem('dark_mode', !isDark);
+                        });
+                    });
+                }
+                
+                // Mobile dark mode toggle
+                const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
+                if (mobileDarkModeToggle) {
+                    mobileDarkModeToggle.addEventListener('click', function() {
+                        const isDark = document.documentElement.classList.contains('dark');
+                        document.documentElement.classList.toggle('dark');
+                        
+                        // Update mobile icons
+                        const mobileSunIcon = document.getElementById('mobileSunIcon');
+                        const mobileMoonIcon = document.getElementById('mobileMoonIcon');
+                        const toggleSwitch = document.querySelector('#mobileDarkModeToggle .relative > div');
+                        
+                        if (isDark) {
+                            mobileSunIcon.classList.remove('hidden');
+                            mobileMoonIcon.classList.add('hidden');
+                            if (toggleSwitch) toggleSwitch.style.transform = 'translateX(1rem)';
+                        } else {
+                            mobileSunIcon.classList.add('hidden');
+                            mobileMoonIcon.classList.remove('hidden');
+                            if (toggleSwitch) toggleSwitch.style.transform = 'translateX(0)';
+                        }
+                        
+                        // Send AJAX request to update user preference
+                        fetch("{% url 'accounts:toggle_dark_mode' %}", {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({dark_mode: !isDark})
+                        }).then(response => {
+                            if (!response.ok) {
+                                localStorage.setItem('dark_mode', !isDark);
+                            }
+                        }).catch(error => {
+                            localStorage.setItem('dark_mode', !isDark);
+                        });
+                    });
+                }
+                
+                // Notification function
+                window.showNotification = function(message, type = 'info') {
+                    const notification = document.createElement('div');
+                    notification.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full ${type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'} text-white`;
+                    notification.innerHTML = `
+                        <div class="flex items-center">
+                            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} mr-3"></i>
+                            <span>${message}</span>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.style.transform = 'translateX(0)';
+                    }, 10);
+                    
+                    setTimeout(() => {
+                        notification.style.transform = 'translateX(100%)';
+                        setTimeout(() => {
+                            document.body.removeChild(notification);
+                        }, 300);
+                    }, 3000);
+                };
+                
+                // Add keyboard shortcuts
+                document.addEventListener('keydown', function(e) {
+                    // Ctrl/Cmd + K for search
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                        e.preventDefault();
+                        document.getElementById('searchInput')?.focus();
+                    }
+                    
+                    // Escape key to close modals and dropdowns
+                    if (e.key === 'Escape') {
+                        document.getElementById('supportModal')?.classList.add('hidden');
+                        document.getElementById('chatbotWidget')?.classList.add('hidden');
+                        document.getElementById('mobileMenu')?.classList.add('hidden');
+                        closeAllDropdowns();
+                    }
+                });
+                
+                // Performance monitoring
+                if ('performance' in window) {
+                    window.addEventListener('load', function() {
+                        setTimeout(function() {
+                            const timing = performance.getEntriesByType('navigation')[0];
+                            console.log('Page load time:', timing.loadEventEnd - timing.fetchStart, 'ms');
+                        }, 0);
+                    });
+                }
+                
+                // Accessibility improvements
+                document.addEventListener('focusin', function(e) {
+                    if (e.target.matches('button, a, input, select, textarea')) {
+                        e.target.classList.add('focus-visible');
+                    }
+                });
+                
+                document.addEventListener('focusout', function(e) {
+                    if (e.target.matches('button, a, input, select, textarea')) {
+                        e.target.classList.remove('focus-visible');
+                    }
+                });
+                
+                // Check for saved dark mode preference on page load
+                document.addEventListener('DOMContentLoaded', function() {
+                    const savedDarkMode = localStorage.getItem('dark_mode');
+                    if (savedDarkMode === 'true' && !document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.add('dark');
+                        
+                        // Update icons
+                        const sunIcon = document.getElementById('sunIcon');
+                        const moonIcon = document.getElementById('moonIcon');
+                        const mobileSunIcon = document.getElementById('mobileSunIcon');
+                        const mobileMoonIcon = document.getElementById('mobileMoonIcon');
+                        const toggleSwitch = document.querySelector('#mobileDarkModeToggle .relative > div');
+                        
+                        if (sunIcon) sunIcon.classList.add('hidden');
+                        if (moonIcon) moonIcon.classList.remove('hidden');
+                        if (mobileSunIcon) mobileSunIcon.classList.add('hidden');
+                        if (mobileMoonIcon) mobileMoonIcon.classList.remove('hidden');
+                        if (toggleSwitch) toggleSwitch.style.transform = 'translateX(0)';
+                    }
+                });
+        </script>
+            
     
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">

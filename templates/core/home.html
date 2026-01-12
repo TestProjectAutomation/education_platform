@@ -29,7 +29,7 @@
                 </p>
                 
                 <div class="flex flex-wrap gap-4 mb-8">
-                    <a href="{% url 'courses:list' %}" class="group btn-primary bg-white text-primary-600 hover:bg-gray-100 px-8 py-3 text-lg flex items-center">
+                    <a href="" class="group btn-primary bg-white text-primary-600 hover:bg-gray-100 px-8 py-3 text-lg flex items-center">
                         <span>{% trans "Start Learning" %}</span>
                         <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -72,7 +72,7 @@
                 <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-400/20 rounded-full blur-xl"></div>
                 
                 <!-- Hero Image with Animation -->
-                <div class="relative z-10">
+                <div class="relative">
                     <img src="{% static 'images/hero-image.svg' %}" 
                          alt="{% trans 'Online Learning' %}" 
                          class="w-full h-auto animate-float"
@@ -243,7 +243,7 @@
                     {% trans "Discover our most popular courses selected by students" %}
                 </p>
             </div>
-            <a href="{% url 'courses:list' %}" class="group inline-flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium">
+            <a href="" class="group inline-flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium">
                 <span>{% trans "View All Courses" %}</span>
                 <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -446,10 +446,10 @@
                     </p>
                 </div>
                 <div class="flex gap-4">
-                    <a href="{% url 'courses:list' %}" class="btn-primary px-8 py-3">
+                    <a href="" class="btn-primary px-8 py-3">
                         {% trans "Browse All Courses" %}
                     </a>
-                    <a href="{% url 'courses:list' %}?price=free" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-3 rounded-lg font-medium transition duration-300">
+                    <a href="" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-3 rounded-lg font-medium transition duration-300">
                         {% trans "Free Courses" %}
                     </a>
                 </div>
@@ -502,7 +502,7 @@
                             <span class="text-sm">{% trans "Certificate" %}</span>
                         </div>
                     </div>
-                    <a href="{% url 'courses:list' %}?category=web-development" 
+                    <a href="" 
                        class="mt-6 inline-flex items-center text-white hover:text-blue-200">
                         <span>{% trans "Start Path" %}</span>
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -543,7 +543,7 @@
                             <span class="text-sm">{% trans "Certificate" %}</span>
                         </div>
                     </div>
-                    <a href="{% url 'courses:list' %}?category=data-science" 
+                    <a href="" 
                        class="mt-6 inline-flex items-center text-white hover:text-green-200">
                         <span>{% trans "Start Path" %}</span>
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -584,7 +584,7 @@
                             <span class="text-sm">{% trans "Certificate" %}</span>
                         </div>
                     </div>
-                    <a href="{% url 'courses:list' %}?category=business" 
+                    <a href="" 
                        class="mt-6 inline-flex items-center text-white hover:text-purple-200">
                         <span>{% trans "Start Path" %}</span>
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -625,9 +625,15 @@
             <article class="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
                 <a href="{% url 'articles:detail' article.slug %}" class="block relative overflow-hidden">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="{{ article.featured_image.url|default:'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80' }}" 
-                             alt="{{ article.title }}" 
-                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        {% if article.featured_image %}
+                            <img src="{{ article.featured_image.url }}" 
+                                alt="{{ article.title }}" 
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                                alt="Default Image" 
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        {% endif %}
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <div class="absolute top-4 left-4">
                             <span class="inline-block px-3 py-1 bg-primary-600 text-white text-sm rounded-full">
@@ -1152,7 +1158,7 @@
             
             <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
                 {% if not user.is_authenticated %}
-                <a href="{% url 'account_signup' %}" 
+                <a href="{% url 'accounts:register' %}" 
                    class="group bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 text-lg font-medium rounded-lg transition duration-300 inline-flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
@@ -1160,7 +1166,7 @@
                     <span>{% trans "Sign Up Free" %}</span>
                 </a>
                 {% endif %}
-                <a href="{% url 'courses:list' %}" 
+                <a href="" 
                    class="group border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 text-lg font-medium rounded-lg transition duration-300 inline-flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>

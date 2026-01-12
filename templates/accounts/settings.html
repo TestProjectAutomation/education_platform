@@ -1,0 +1,447 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Settings" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">{% trans "Settings" %}</h5>
+                    <div class="nav flex-column nav-pills" id="settingsTabs" role="tablist">
+                        <button class="nav-link active" id="preferences-tab" data-bs-toggle="pill" data-bs-target="#preferences" type="button">
+                            <i class="fas fa-sliders-h me-2"></i>
+                            {% trans "Preferences" %}
+                        </button>
+                        <button class="nav-link" id="notifications-tab" data-bs-toggle="pill" data-bs-target="#notifications" type="button">
+                            <i class="fas fa-bell me-2"></i>
+                            {% trans "Notifications" %}
+                        </button>
+                        <button class="nav-link" id="privacy-tab" data-bs-toggle="pill" data-bs-target="#privacy" type="button">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            {% trans "Privacy" %}
+                        </button>
+                        <button class="nav-link" id="export-tab" data-bs-toggle="pill" data-bs-target="#export" type="button">
+                            <i class="fas fa-download me-2"></i>
+                            {% trans "Data Export" %}
+                        </button>
+                        <hr class="my-2">
+                        <a href="{% url 'accounts:profile' %}" class="nav-link text-primary">
+                            <i class="fas fa-user me-2"></i>
+                            {% trans "Profile Settings" %}
+                        </a>
+                        <a href="{% url 'accounts:dashboard' %}" class="nav-link">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            {% trans "Back to Dashboard" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="tab-content" id="settingsTabsContent">
+                        <!-- Preferences -->
+                        <div class="tab-pane fade show active" id="preferences">
+                            <h4 class="mb-4">
+                                <i class="fas fa-sliders-h me-2 text-primary"></i>
+                                {% trans "Preferences" %}
+                            </h4>
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="update_preferences" value="1">
+                                
+                                <div class="card mb-4 border-0 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">
+                                            <i class="fas fa-palette me-2"></i>
+                                            {% trans "Appearance" %}
+                                        </h5>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label d-flex justify-content-between">
+                                                <span>{% trans "Dark Mode" %}</span>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" 
+                                                           id="darkModeToggle" {% if user.dark_mode %}checked{% endif %}>
+                                                    <label class="form-check-label" for="darkModeToggle"></label>
+                                                </div>
+                                            </label>
+                                            <p class="small text-muted mb-0">
+                                                {% trans "Switch between light and dark themes" %}
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="mb-0">
+                                            <label class="form-label">{% trans "Language" %}</label>
+                                            <select class="form-select">
+                                                <option selected>{% trans "English" %}</option>
+                                                <option>{% trans "Arabic" %}</option>
+                                                <option>{% trans "Spanish" %}</option>
+                                                <option>{% trans "French" %}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-4 border-0 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">
+                                            <i class="fas fa-envelope me-2"></i>
+                                            {% trans "Email Preferences" %}
+                                        </h5>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                {{ user.email_notifications }}
+                                                <label class="form-check-label" for="emailNotifications">
+                                                    {% trans "Email Notifications" %}
+                                                </label>
+                                            </div>
+                                            <p class="small text-muted mb-0">
+                                                {% trans "Receive important updates via email" %}
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                {{ user.newsletter_subscription }}
+                                                <label class="form-check-label" for="newsletter">
+                                                    {% trans "Newsletter Subscription" %}
+                                                </label>
+                                            </div>
+                                            <p class="small text-muted mb-0">
+                                                {% trans "Receive weekly newsletters with learning tips" %}
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="mb-0">
+                                            <div class="form-check form-switch">
+                                                {{ user.sms_notifications }}
+                                                <label class="form-check-label" for="smsNotifications">
+                                                    {% trans "SMS Notifications" %}
+                                                </label>
+                                            </div>
+                                            <p class="small text-muted mb-0">
+                                                {% trans "Receive important alerts via SMS" %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="fas fa-save me-2"></i>
+                                        {% trans "Save Preferences" %}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Notifications -->
+                        <div class="tab-pane fade" id="notifications">
+                            <h4 class="mb-4">
+                                <i class="fas fa-bell me-2 text-primary"></i>
+                                {% trans "Notification Settings" %}
+                            </h4>
+                            
+                            <div class="card border-0 bg-light mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">{% trans "Notification Types" %}</h5>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="courseUpdates" checked>
+                                                <label class="form-check-label" for="courseUpdates">
+                                                    <i class="fas fa-book me-2 text-info"></i>
+                                                    {% trans "Course Updates" %}
+                                                </label>
+                                                <p class="small text-muted mb-0 ms-4">
+                                                    {% trans "New content, assignments, and announcements" %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="achievements" checked>
+                                                <label class="form-check-label" for="achievements">
+                                                    <i class="fas fa-trophy me-2 text-warning"></i>
+                                                    {% trans "Achievements" %}
+                                                </label>
+                                                <p class="small text-muted mb-0 ms-4">
+                                                    {% trans "When you unlock new achievements" %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="social" checked>
+                                                <label class="form-check-label" for="social">
+                                                    <i class="fas fa-users me-2 text-success"></i>
+                                                    {% trans "Social Interactions" %}
+                                                </label>
+                                                <p class="small text-muted mb-0 ms-4">
+                                                    {% trans "Comments, likes, and mentions" %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="system" checked>
+                                                <label class="form-check-label" for="system">
+                                                    <i class="fas fa-cog me-2 text-secondary"></i>
+                                                    {% trans "System Messages" %}
+                                                </label>
+                                                <p class="small text-muted mb-0 ms-4">
+                                                    {% trans "Important platform announcements" %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'accounts:notifications' %}" class="btn btn-outline-primary">
+                                    <i class="fas fa-history me-2"></i>
+                                    {% trans "View Notification History" %}
+                                </a>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>
+                                    {% trans "Save Settings" %}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Privacy -->
+                        <div class="tab-pane fade" id="privacy">
+                            <h4 class="mb-4">
+                                <i class="fas fa-shield-alt me-2 text-primary"></i>
+                                {% trans "Privacy Settings" %}
+                            </h4>
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="update_privacy" value="1">
+                                
+                                <div class="card border-0 bg-light mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-4">{% trans "Profile Visibility" %}</h5>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">{% trans "Who can see your profile?" %}</label>
+                                            <select class="form-select">
+                                                <option value="public" selected>{% trans "Everyone" %}</option>
+                                                <option value="registered">{% trans "Registered Users Only" %}</option>
+                                                <option value="private">{% trans "Only Me" %}</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">{% trans "Who can see your activity?" %}</label>
+                                            <select class="form-select">
+                                                <option value="public" selected>{% trans "Everyone" %}</option>
+                                                <option value="registered">{% trans "Registered Users Only" %}</option>
+                                                <option value="private">{% trans "Only Me" %}</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-0">
+                                            <label class="form-label">{% trans "Who can see your achievements?" %}</label>
+                                            <select class="form-select">
+                                                <option value="public" selected>{% trans "Everyone" %}</option>
+                                                <option value="registered">{% trans "Registered Users Only" %}</option>
+                                                <option value="private">{% trans "Only Me" %}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card border-0 bg-light mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-4">{% trans "Data Sharing" %}</h5>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="shareProgress">
+                                                <label class="form-check-label" for="shareProgress">
+                                                    {% trans "Share learning progress with instructors" %}
+                                                </label>
+                                                <p class="small text-muted mb-0 ms-4">
+                                                    {% trans "Allow instructors to see your course progress" %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="shareAnalytics" checked>
+                                                <label class="form-check-label" for="shareAnalytics">
+                                                    {% trans "Share anonymous usage data" %}
+                                                </label>
+                                                <p class="small text-muted mb-0 ms-4">
+                                                    {% trans "Help us improve the platform (anonymous)" %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-0">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="partnerOffers">
+                                                <label class="form-check-label" for="partnerOffers">
+                                                    {% trans "Receive partner offers" %}
+                                                </label>
+                                                <p class="small text-muted mb-0 ms-4">
+                                                    {% trans "Get relevant offers from our partners" %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="fas fa-save me-2"></i>
+                                        {% trans "Save Privacy Settings" %}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Data Export -->
+                        <div class="tab-pane fade" id="export">
+                            <h4 class="mb-4">
+                                <i class="fas fa-download me-2 text-primary"></i>
+                                {% trans "Data Export" %}
+                            </h4>
+                            
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-database fa-4x text-primary mb-4"></i>
+                                        <h4 class="mb-3">{% trans "Download Your Data" %}</h4>
+                                        <p class="text-muted mb-4">
+                                            {% trans "You can download a copy of your data including profile information, activities, achievements, and learning goals." %}
+                                        </p>
+                                        
+                                        <div class="alert alert-info mb-4">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            {% trans "Your data will be exported in JSON format. This may take a few moments." %}
+                                        </div>
+                                        
+                                        <a href="{% url 'accounts:export_data' %}" class="btn btn-primary btn-lg px-5">
+                                            <i class="fas fa-download me-2"></i>
+                                            {% trans "Export My Data" %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card border-0 bg-light mt-4">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        <i class="fas fa-trash-alt me-2 text-danger"></i>
+                                        {% trans "Delete Account" %}
+                                    </h5>
+                                    <p class="text-muted mb-4">
+                                        {% trans "Warning: This action is permanent and cannot be undone. All your data will be deleted." %}
+                                    </p>
+                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                        <i class="fas fa-trash me-2"></i>
+                                        {% trans "Delete My Account" %}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    {% trans "Delete Account" %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    {% trans "This action cannot be undone!" %}
+                </div>
+                <p>{% trans "Are you sure you want to delete your account? This will permanently:" %}</p>
+                <ul>
+                    <li>{% trans "Delete your profile and all personal information" %}</li>
+                    <li>{% trans "Remove your enrollment from all courses" %}</li>
+                    <li>{% trans "Delete your achievements and progress" %}</li>
+                    <li>{% trans "Remove all your content and contributions" %}</li>
+                </ul>
+                <div class="mb-3">
+                    <label for="confirmUsername" class="form-label">
+                        {% trans "To confirm, type your username:" %}
+                        <strong>{{ user.username }}</strong>
+                    </label>
+                    <input type="text" class="form-control" id="confirmUsername" placeholder="{% trans 'Type your username here' %}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                <button type="button" class="btn btn-danger" disabled id="deleteAccountBtn">
+                    <i class="fas fa-trash me-2"></i>
+                    {% trans "Permanently Delete Account" %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('change', function() {
+            fetch('{% url "accounts:toggle_dark_mode" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            });
+        });
+    }
+    
+    // Delete account confirmation
+    const confirmInput = document.getElementById('confirmUsername');
+    const deleteBtn = document.getElementById('deleteAccountBtn');
+    if (confirmInput && deleteBtn) {
+        confirmInput.addEventListener('input', function() {
+            deleteBtn.disabled = this.value !== '{{ user.username }}';
+        });
+    }
+});
+</script>
+{% endblock %}

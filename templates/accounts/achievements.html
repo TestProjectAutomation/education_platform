@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Achievements" %} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-gradient-warning text-white shadow-lg border-0">
+                <div class="card-body py-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="mb-3">
+                                <i class="fas fa-trophy me-3"></i>
+                                {% trans "Achievements" %}
+                            </h1>
+                            <p class="mb-0 opacity-75">
+                                {% trans "Unlock achievements by completing courses and reaching milestones" %}
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="bg-white bg-opacity-25 rounded-circle d-inline-flex p-4">
+                                <i class="fas fa-medal fa-3x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats -->
+    <div class="row mb-5">
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-primary bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-primary mb-2">{{ stats.unlocked }}</h2>
+                    <p class="text-muted mb-0">{% trans "Unlocked" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-secondary bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-secondary mb-2">{{ stats.total|add:"-stats.unlocked" }}</h2>
+                    <p class="text-muted mb-0">{% trans "Locked" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-success bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-success mb-2">{{ stats.total }}</h2>
+                    <p class="text-muted mb-0">{% trans "Total" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card border-0 bg-info bg-opacity-10 shadow-sm">
+                <div class="card-body text-center py-4">
+                    <h2 class="text-info mb-2">{{ stats.points }}</h2>
+                    <p class="text-muted mb-0">{% trans "Points Earned" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">{% trans "Progress" %}</h5>
+                <span class="badge bg-primary">{{ stats.percentage }}%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+                <div class="progress-bar bg-warning" role="progressbar" 
+                     style="width: {{ stats.percentage }}%"
+                     aria-valuenow="{{ stats.percentage }}" 
+                     aria-valuemin="0" 
+                     aria-valuemax="100">
+                </div>
+            </div>
+            <p class="text-muted small mt-2 mb-0">
+                {{ stats.unlocked }} {% trans "of" %} {{ stats.total }} {% trans "achievements unlocked" %}
+            </p>
+        </div>
+    </div>
+    
+    <!-- Unlocked Achievements -->
+    <div class="mb-5">
+        <h3 class="mb-4">
+            <i class="fas fa-unlock me-2 text-success"></i>
+            {% trans "Unlocked Achievements" %}
+            <span class="badge bg-success ms-2">{{ unlocked_achievements.count }}</span>
+        </h3>
+        
+        {% if unlocked_achievements %}
+        <div class="row g-4">
+            {% for user_achievement in unlocked_achievements %}
+            <div class="col-xl-4 col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="{{ user_achievement.achievement.icon|default:'fas fa-trophy' }} fa-2x text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1">{{ user_achievement.achievement.name }}</h5>
+                                <p class="text-muted small mb-0">{{ user_achievement.achievement.description }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                            <div>
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>
+                                    {% trans "Unlocked" %}
+                                </span>
+                                <small class="text-muted ms-2">
+                                    {{ user_achievement.unlocked_at|date:"M d, Y" }}
+                                </small>
+                            </div>
+                            <div class="text-warning">
+                                <i class="fas fa-star me-1"></i>
+                                <strong>{{ user_achievement.achievement.points }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5 border rounded">
+            <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
+            <h5 class="text-muted mb-3">{% trans "No Achievements Yet" %}</h5>
+            <p class="text-muted">{% trans "Start learning to unlock your first achievement!" %}</p>
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i>
+                {% trans "Start Learning" %}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Locked Achievements -->
+    <div>
+        <h3 class="mb-4">
+            <i class="fas fa-lock me-2 text-secondary"></i>
+            {% trans "Locked Achievements" %}
+            <span class="badge bg-secondary ms-2">{{ locked_achievements.count }}</span>
+        </h3>
+        
+        {% if locked_achievements %}
+        <div class="row g-4">
+            {% for achievement in locked_achievements %}
+            <div class="col-xl-4 col-lg-6">
+                <div class="card border-0 shadow-sm h-100 opacity-75">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="bg-secondary bg-opacity-10 rounded-circle p-3 me-3">
+                                    <i class="{{ achievement.icon|default:'fas fa-trophy' }} fa-2x text-secondary"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1 text-secondary">{{ achievement.name }}</h5>
+                                <p class="text-muted small mb-0">{{ achievement.description }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                            <div>
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-lock me-1"></i>
+                                    {% trans "Locked" %}
+                                </span>
+                            </div>
+                            <div class="text-secondary">
+                                <i class="fas fa-star me-1"></i>
+                                <strong>{{ achievement.points }}</strong>
+                            </div>
+                        </div>
+                        
+                        {% if achievement.requirements %}
+                        <div class="mt-3">
+                            <small class="text-muted">{% trans "Requirements:" %}</small>
+                            <ul class="small text-muted mb-0 ps-3">
+                                {% for req in achievement.requirements %}
+                                <li>{{ req }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5 border rounded bg-light">
+            <i class="fas fa-medal fa-4x text-success mb-3"></i>
+            <h5 class="text-success mb-3">{% trans "Amazing! You've unlocked all achievements!" %}</h5>
+            <p class="text-muted">{% trans "Keep up the great work! More achievements coming soon." %}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
