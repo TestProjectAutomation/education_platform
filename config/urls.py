@@ -10,13 +10,12 @@ from rest_framework import permissions
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
-    path('set-language/', set_language, name='set_language'),
 ]
 
 # Internationalized URLs
 urlpatterns += i18n_patterns(
+    path('admin/', admin.site.urls),
     # Core
     path('', include('core.urls')),
     
@@ -25,7 +24,6 @@ urlpatterns += i18n_patterns(
     
     # Content
     path('articles/', include('articles.urls')),
-    path('scholarships/', include('scholarships.urls')),
     path('books/', include('books.urls')),
     path('pages/', include('pages.urls')),
     path('blog/', include('blog.urls')),

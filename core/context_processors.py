@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import SiteSetting, Category
 from advertisements.models import Advertisement, AdPlacement
 from pages.models import Page
+from blog.models import Category
 
 def site_settings(request):
     """إرجاع إعدادات الموقع المخزنة في الكاش"""
@@ -109,4 +110,16 @@ def theme_settings(request):
     return {
         'is_dark_mode': dark_mode,
         'site_settings': request.site_settings if hasattr(request, 'site_settings') else None
+    }
+
+
+
+
+def categories_processor(request):
+    """
+    Makes all categories available in all templates.
+    """
+    categories = Category.objects.filter(is_active=True).order_by('order', 'name_ar')
+    return {
+        'categories': categories
     }

@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     # Local apps
     'core',
     'articles',
-    'scholarships',
     'books',
     # 'dashboard',
     'advertisements',
@@ -93,6 +92,9 @@ TEMPLATES = [
                 'core.context_processors.language_processor',
                 'core.context_processors.dark_mode_processor',
                 'core.context_processors.theme_settings',
+                'core.context_processors.categories_processor',
+
+                'blog.context_processors.categories_processor',
             ],
         },
     },

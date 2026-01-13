@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.display_title }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ post.display_description }}">
+<meta name="keywords" content="{{ post.seo_keywords }}">
+{% if post.canonical_url %}
+<link rel="canonical" href="{{ post.canonical_url }}">
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}">الرئيسية</a></li>
+            <li class="breadcrumb-item"><a href="{{ post.category.get_absolute_url }}">{{ post.category.name_ar }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <article>
+                <!-- Header -->
+                <header class="mb-4">
+                    <span class="badge bg-primary mb-2">{{ post.category.name_ar }}</span>
+                    <h1 class="mb-3">{{ post.title }}</h1>
+                    
+                    <div class="d-flex justify-content-between align-items-center text-muted mb-4">
+                        <div>
+                            <i class="far fa-user me-1"></i>
+                            <span>{{ post.author.get_full_name|default:post.author.username }}</span>
+                        </div>
+                        <div>
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <span>{{ post.publish_date|date:"Y-m-d" }}</span>
+                        </div>
+                        <div>
+                            <i class="far fa-eye me-1"></i>
+                            <span>{{ post.views }}</span>
+                        </div>
+                    </div>
+                    
+                    {% if post.featured_image %}
+                    <img src="{{ post.featured_image.url }}" class="img-fluid rounded mb-4" alt="{{ post.title }}">
+                    {% endif %}
+                </header>
+                
+                <!-- Content -->
+                <div class="content mb-5">
+                    {{ post.content|safe }}
+                </div>
+                
+                <!-- Tags (Optional) -->
+                {% if post.seo_keywords %}
+                <div class="tags mb-5">
+                    <h5>الكلمات المفتاحية:</h5>
+                    {% for keyword in post.seo_keywords.split|slice:":5" %}
+                    <span class="badge bg-secondary me-1">{{ keyword }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <!-- Share Buttons -->
+                <div class="share-buttons mb-5">
+                    <h5>شارك المقال:</h5>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                       target="_blank" class="btn btn-outline-primary me-2">
+                        <i class="fab fa-facebook me-1"></i> فيسبوك
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title }}" 
+                       target="_blank" class="btn btn-outline-info me-2">
+                        <i class="fab fa-twitter me-1"></i> تويتر
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}" 
+                       target="_blank" class="btn btn-outline-primary">
+                        <i class="fab fa-linkedin me-1"></i> لينكدإن
+                    </a>
+                </div>
+            </article>
+            
+            <!-- Related Posts -->
+            {% if related_posts %}
+            <section class="related-posts mt-5 pt-5 border-top">
+                <h3 class="mb-4">مقالات ذات صلة</h3>
+                <div class="row">
+                    {% for related in related_posts %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            {% if related.thumbnail %}
+                            <img src="{{ related.thumbnail.url }}" class="card-img-top" alt="{{ related.title }}" style="height: 150px; object-fit: cover;">
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <h6 class="card-title">{{ related.title }}</h6>
+                                <p class="card-text small">{{ related.excerpt|truncatewords:15 }}</p>
+                                <a href="{{ related.get_absolute_url }}" class="btn btn-sm btn-outline-primary">اقرأ المزيد</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Search Widget -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">بحث</h5>
+                    <form action="{% url 'blog:search' %}" method="get">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="ابحث في المقالات...">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Categories Widget -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">التصنيفات</h5>
+                    <ul class="list-unstyled">
+                        {% for category in categories %}
+                        <li class="mb-2">
+                            <a href="{{ category.get_absolute_url }}" class="text-decoration-none">
+                                <i class="fas fa-folder me-1"></i> {{ category.name_ar }}
+                                <span class="badge bg-secondary float-end">{{ category.post_set.count }}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Popular Posts Widget -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">الأكثر مشاهدة</h5>
+                    {% for popular_post in popular_posts|slice:":5" %}
+                    <div class="mb-3">
+                        <h6 class="mb-1">
+                            <a href="{{ popular_post.get_absolute_url }}" class="text-decoration-none">
+                                {{ popular_post.title }}
+                            </a>
+                        </h6>
+                        <small class="text-muted">
+                            <i class="far fa-eye me-1"></i> {{ popular_post.views }}
+                        </small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

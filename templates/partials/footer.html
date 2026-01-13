@@ -1,97 +1,107 @@
 {% load static %}
 {% load i18n %}
 
-<footer class="bg-gray-900 text-white animate-on-scroll">
-    <div class="container mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+<footer class="bg-gradient-to-b from-gray-900 to-gray-950 text-white animate-on-scroll">
+    <div class="container mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
             <!-- Company Info -->
             <div>
-                <a href="{% url 'core:home' %}" class="flex items-center space-x-3 mb-6 group">
+                <a href="{% url 'core:home' %}" class="flex items-center gap-3 mb-8 group">
                     {% if site_settings.logo_light %}
                     <img src="{{ site_settings.logo_light.url }}" 
                          alt="{{ site_settings.site_name }}" 
-                         class="h-10 w-auto transition-transform duration-300 group-hover:scale-110"
+                         class="h-12 w-auto transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
                          loading="lazy">
                     {% else %}
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary-500 via-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-500">
+                        <i class="fas fa-graduation-cap text-white text-2xl"></i>
                     </div>
                     {% endif %}
-                    <span class="text-xl font-bold text-white group-hover:text-primary-300 transition-colors">
-                        {{ site_settings.site_name }}
-                    </span>
+                    <div>
+                        <span class="text-xl font-bold text-white group-hover:text-primary-300 transition-colors block">
+                            {{ site_settings.site_name }}
+                        </span>
+                        <span class="text-primary-400 text-sm font-medium">{% trans "منصة التعليم الأولى" %}</span>
+                    </div>
                 </a>
                 
-                <p class="text-gray-400 mb-6 leading-relaxed">
+                <p class="text-gray-400 mb-8 leading-relaxed text-lg">
                     {{ site_settings.site_description }}
                 </p>
                 
                 <!-- Social Media Links -->
-                <div class="flex space-x-3">
-                    {% if site_settings.facebook_url %}
-                    <a href="{{ site_settings.facebook_url }}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="social-icon bg-gray-800 hover:bg-blue-600"
-                       aria-label="Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    {% endif %}
-                    
-                    {% if site_settings.twitter_url %}
-                    <a href="{{ site_settings.twitter_url }}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="social-icon bg-gray-800 hover:bg-blue-400"
-                       aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    {% endif %}
-                    
-                    {% if site_settings.linkedin_url %}
-                    <a href="{{ site_settings.linkedin_url }}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="social-icon bg-gray-800 hover:bg-blue-700"
-                       aria-label="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    {% endif %}
-                    
-                    {% if site_settings.instagram_url %}
-                    <a href="{{ site_settings.instagram_url }}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="social-icon bg-gray-800 hover:bg-pink-600"
-                       aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    {% endif %}
-                    
-                    {% if site_settings.youtube_url %}
-                    <a href="{{ site_settings.youtube_url }}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="social-icon bg-gray-800 hover:bg-red-600"
-                       aria-label="YouTube">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    {% endif %}
+                <div class="mb-8">
+                    <p class="text-gray-300 font-medium mb-4">{% trans "تابعنا على" %}</p>
+                    <div class="flex gap-3">
+                        {% if site_settings.facebook_url %}
+                        <a href="{{ site_settings.facebook_url }}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="social-icon bg-gray-800 hover:bg-[#1877F2] transform hover:-translate-y-1 transition-all duration-300"
+                           aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        {% endif %}
+                        
+                        {% if site_settings.twitter_url %}
+                        <a href="{{ site_settings.twitter_url }}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="social-icon bg-gray-800 hover:bg-[#1DA1F2] transform hover:-translate-y-1 transition-all duration-300"
+                           aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
+                        
+                        {% if site_settings.linkedin_url %}
+                        <a href="{{ site_settings.linkedin_url }}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="social-icon bg-gray-800 hover:bg-[#0A66C2] transform hover:-translate-y-1 transition-all duration-300"
+                           aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        {% endif %}
+                        
+                        {% if site_settings.instagram_url %}
+                        <a href="{{ site_settings.instagram_url }}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="social-icon bg-gray-800 hover:bg-gradient-to-r hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#FCB045] transform hover:-translate-y-1 transition-all duration-300"
+                           aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+                        
+                        {% if site_settings.youtube_url %}
+                        <a href="{{ site_settings.youtube_url }}" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           class="social-icon bg-gray-800 hover:bg-[#FF0000] transform hover:-translate-y-1 transition-all duration-300"
+                           aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
                 
                 <!-- App Store & Play Store -->
                 {% if site_settings.app_store_url or site_settings.play_store_url %}
-                <div class="mt-6">
-                    <p class="text-gray-400 text-sm mb-3">{% trans "حمل التطبيق" %}</p>
-                    <div class="flex space-x-3">
+                <div>
+                    <p class="text-gray-300 font-medium mb-3">{% trans "حمل تطبيقنا" %}</p>
+                    <div class="flex gap-3">
                         {% if site_settings.app_store_url %}
                         <a href="{{ site_settings.app_store_url }}" 
                            target="_blank" 
                            rel="noopener noreferrer"
-                           class="inline-block">
-                            <img src="{% static 'images/app-store-badge.svg' %}" 
-                                 alt="{% trans 'حمل من App Store' %}" 
-                                 class="h-10 w-auto">
+                           class="inline-block transform hover:-translate-y-1 transition-transform duration-300">
+                            <div class="w-32 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-700">
+                                <i class="fab fa-apple text-xl mr-2"></i>
+                                <div class="text-left">
+                                    <div class="text-xs">Download on the</div>
+                                    <div class="text-sm font-bold">App Store</div>
+                                </div>
+                            </div>
                         </a>
                         {% endif %}
                         
@@ -99,10 +109,14 @@
                         <a href="{{ site_settings.play_store_url }}" 
                            target="_blank" 
                            rel="noopener noreferrer"
-                           class="inline-block">
-                            <img src="{% static 'images/play-store-badge.svg' %}" 
-                                 alt="{% trans 'حمل من Google Play' %}" 
-                                 class="h-10 w-auto">
+                           class="inline-block transform hover:-translate-y-1 transition-transform duration-300">
+                            <div class="w-32 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-700">
+                                <i class="fab fa-google-play text-lg mr-2"></i>
+                                <div class="text-left">
+                                    <div class="text-xs">GET IT ON</div>
+                                    <div class="text-sm font-bold">Google Play</div>
+                                </div>
+                            </div>
                         </a>
                         {% endif %}
                     </div>
@@ -112,51 +126,59 @@
             
             <!-- Quick Links -->
             <div>
-                <h3 class="text-lg font-bold mb-6 flex items-center">
-                    <i class="fas fa-link mr-2 text-primary-400"></i>
-                    {% trans "روابط سريعة" %}
+                <h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-link text-white"></i>
+                    </div>
+                    <span>{% trans "روابط سريعة" %}</span>
                 </h3>
-                <ul class="space-y-3">
+                <ul class="space-y-4">
                     <li>
-                        <a href="" 
+                        <a href="{% url 'core:home' %}" 
                            class="footer-link group">
-                            <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                            {% trans "جميع الدورات" %}
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mr-3 transition-transform duration-300 group-hover:scale-150"></div>
+                            <span class="flex-1">{% trans "الرئيسية" %}</span>
+                            <i class="fas fa-chevron-left text-gray-500 group-hover:text-blue-400 transition-colors rtl:rotate-180 transform group-hover:translate-x-1"></i>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'articles:list' %}" 
                            class="footer-link group">
-                            <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                            {% trans "المقالات" %}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'scholarships:list' %}" 
-                           class="footer-link group">
-                            <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                            {% trans "المنح الدراسية" %}
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-3 transition-transform duration-300 group-hover:scale-150"></div>
+                            <span class="flex-1">{% trans "المقالات" %}</span>
+                            <i class="fas fa-chevron-left text-gray-500 group-hover:text-green-400 transition-colors rtl:rotate-180 transform group-hover:translate-x-1"></i>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'books:list' %}" 
                            class="footer-link group">
-                            <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                            {% trans "الكتب والملخصات" %}
+                            <div class="w-2 h-2 bg-purple-500 rounded-full mr-3 transition-transform duration-300 group-hover:scale-150"></div>
+                            <span class="flex-1">{% trans "الكتب والمراجع" %}</span>
+                            <i class="fas fa-chevron-left text-gray-500 group-hover:text-purple-400 transition-colors rtl:rotate-180 transform group-hover:translate-x-1"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'blog:post_list' %}" 
+                           class="footer-link group">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full mr-3 transition-transform duration-300 group-hover:scale-150"></div>
+                            <span class="flex-1">{% trans "جميع الفئات" %}</span>
+                            <i class="fas fa-chevron-left text-gray-500 group-hover:text-yellow-400 transition-colors rtl:rotate-180 transform group-hover:translate-x-1"></i>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'core:about' %}" 
                            class="footer-link group">
-                            <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                            {% trans "من نحن" %}
+                            <div class="w-2 h-2 bg-red-500 rounded-full mr-3 transition-transform duration-300 group-hover:scale-150"></div>
+                            <span class="flex-1">{% trans "من نحن" %}</span>
+                            <i class="fas fa-chevron-left text-gray-500 group-hover:text-red-400 transition-colors rtl:rotate-180 transform group-hover:translate-x-1"></i>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'core:contact' %}" 
                            class="footer-link group">
-                            <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                            {% trans "اتصل بنا" %}
+                            <div class="w-2 h-2 bg-cyan-500 rounded-full mr-3 transition-transform duration-300 group-hover:scale-150"></div>
+                            <span class="flex-1">{% trans "اتصل بنا" %}</span>
+                            <i class="fas fa-chevron-left text-gray-500 group-hover:text-cyan-400 transition-colors rtl:rotate-180 transform group-hover:translate-x-1"></i>
                         </a>
                     </li>
                 </ul>
@@ -164,29 +186,39 @@
             
             <!-- Popular Categories -->
             <div>
-                <h3 class="text-lg font-bold mb-6 flex items-center">
-                    <i class="fas fa-tags mr-2 text-primary-400"></i>
-                    {% trans "الفئات الشائعة" %}
+                <h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tags text-white"></i>
+                    </div>
+                    <span>{% trans "الفئات الشائعة" %}</span>
                 </h3>
-                <ul class="space-y-3">
+                <ul class="space-y-4">
                     {% for category in popular_categories|slice:":6" %}
                     <li>
-                        <a href="{% url 'courses:list' %}?category={{ category.slug }}" 
+                        <a href="{% url 'core:category' category.slug %}" 
                            class="footer-link group">
-                            <span class="w-2 h-2 bg-primary-500 rounded-full inline-block mr-2"></span>
-                            {{ category.name }}
-                            <span class="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded-full ml-2">
-                                {{ category.course_count }}
+                            <div class="w-8 h-8 bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg flex items-center justify-center mr-3">
+                                <i class="{{ category.icon|default:'fas fa-folder' }} text-gray-400"></i>
+                            </div>
+                            <span class="flex-1">{{ category.title }}</span>
+                            <span class="text-xs bg-gradient-to-r from-gray-800 to-gray-700 text-gray-300 px-2 py-1 rounded-full">
+                                {{ category.post_count|default:"0" }}
                             </span>
                         </a>
                     </li>
                     {% empty %}
-                    {% for category in menu_categories|slice:":6" %}
+                    <!-- Default categories -->
+                    {% for categories in category|slice:":6" %}
                     <li>
-                        <a href="{% url 'courses:list' %}?category={{ category.slug }}" 
+                        <a href="{% url 'blog:category' category.slug %}" 
                            class="footer-link group">
-                            <span class="w-2 h-2 bg-primary-500 rounded-full inline-block mr-2"></span>
-                            {{ category.name }}
+                            <div class="w-8 h-8 bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg flex items-center justify-center mr-3">
+                                <i class="{{ category.icon|default:'fas fa-folder' }} text-gray-400"></i>
+                            </div>
+                            <span class="flex-1">{{ category.title }}</span>
+                            <span class="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded-full">
+                                {{ category.post_count|default:"0" }}
+                            </span>
                         </a>
                     </li>
                     {% endfor %}
@@ -196,95 +228,106 @@
             
             <!-- Newsletter & Contact -->
             <div>
-                <h3 class="text-lg font-bold mb-6 flex items-center">
-                    <i class="fas fa-newspaper mr-2 text-primary-400"></i>
-                    {% trans "ابقَ على اطلاع" %}
-                </h3>
-                <p class="text-gray-400 mb-4">
-                    {% trans "اشترك في نشرتنا الإخبارية للحصول على أحدث الدورات والتحديثات." %}
-                </p>
-                
-                <form id="newsletterForm" class="space-y-3">
-                    {% csrf_token %}
-                    <div class="relative">
-                        <input type="email" 
-                               name="email"
-                               placeholder="{% trans 'بريدك الإلكتروني' %}" 
-                               required
-                               class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300">
-                        <div class="absolute left-3 top-3">
-                            <i class="fas fa-envelope text-gray-500"></i>
-                        </div>
+                <h3 class="text-xl font-bold mb-8 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-envelope-open-text text-white"></i>
                     </div>
-                    <button type="submit" 
-                            class="w-full btn-primary py-3 rounded-lg font-medium flex items-center justify-center">
-                        <i class="fas fa-paper-plane mr-2"></i>
-                        {% trans "اشترك الآن" %}
-                    </button>
-                </form>
+                    <span>{% trans "ابقَ على اطلاع" %}</span>
+                </h3>
+                
+                <!-- Newsletter Form -->
+                <div class="mb-10">
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        {% trans "اشترك في نشرتنا الإخبارية للحصول على أحدث المحتويات والتحديثات." %}
+                    </p>
+                    
+                    <form id="newsletterForm" class="space-y-4">
+                        {% csrf_token %}
+                        <div class="relative">
+                            <input type="email" 
+                                   name="email"
+                                   placeholder="{% trans 'بريدك الإلكتروني' %}" 
+                                   required
+                                   class="w-full px-5 py-4 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-500">
+                            <div class="absolute left-4 top-4">
+                                <i class="fas fa-envelope text-gray-500"></i>
+                            </div>
+                        </div>
+                        <button type="submit" 
+                                class="w-full btn-primary py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-3 hover:gap-4 transition-all duration-300 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-paper-plane"></i>
+                            {% trans "اشترك الآن" %}
+                        </button>
+                    </form>
+                </div>
                 
                 <!-- Contact Info -->
-                <div class="mt-8 space-y-4">
-                    <div class="flex items-start">
-                        <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                            <i class="fas fa-map-marker-alt text-primary-400"></i>
+                <div class="space-y-6">
+                    <div class="flex items-start group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-xl flex items-center justify-center mr-4 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-map-marker-alt text-blue-400 text-lg"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-white mb-1">{% trans "العنوان" %}</h4>
-                            <p class="text-gray-400 text-sm">{{ site_settings.address|default:"المملكة العربية السعودية" }}</p>
+                            <h4 class="font-semibold text-white mb-2">{% trans "العنوان" %}</h4>
+                            <p class="text-gray-400 text-lg leading-relaxed">{{ site_settings.address|default:"المملكة العربية السعودية" }}</p>
                         </div>
                     </div>
                     
-                    <div class="flex items-start">
-                        <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                            <i class="fas fa-phone text-primary-400"></i>
+                    <div class="flex items-start group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-900/30 to-emerald-900/30 rounded-xl flex items-center justify-center mr-4 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-phone text-green-400 text-lg"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-white mb-1">{% trans "الهاتف" %}</h4>
-                            <p class="text-gray-400 text-sm">{{ site_settings.phone_number|default:"+966 500 000 000" }}</p>
+                            <h4 class="font-semibold text-white mb-2">{% trans "الهاتف" %}</h4>
+                            <p class="text-gray-400 text-lg">{{ site_settings.phone_number|default:"+966 500 000 000" }}</p>
                         </div>
                     </div>
                     
-                    <div class="flex items-start">
-                        <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                            <i class="fas fa-envelope text-primary-400"></i>
+                    <div class="flex items-start group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl flex items-center justify-center mr-4 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-envelope text-purple-400 text-lg"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-white mb-1">{% trans "البريد الإلكتروني" %}</h4>
-                            <p class="text-gray-400 text-sm">{{ site_settings.contact_email|default:"info@example.com" }}</p>
+                            <h4 class="font-semibold text-white mb-2">{% trans "البريد الإلكتروني" %}</h4>
+                            <p class="text-gray-400 text-lg">{{ site_settings.contact_email|default:"info@example.com" }}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="border-t border-gray-800 mt-12 pt-8">
-            <div class="flex flex-col lg:flex-row justify-between items-center">
-                <div class="mb-4 lg:mb-0">
-                    <p class="text-gray-400 text-sm">
+        <!-- Bottom Section -->
+        <div class="border-t border-gray-800 mt-16 pt-12">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-8">
+                <div class="text-center lg:text-right">
+                    <p class="text-gray-400 text-lg">
                         &copy; {{ now|date:"Y" }} {{ site_settings.site_name }}. {% trans "جميع الحقوق محفوظة." %}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
+                    <p class="text-gray-500 text-sm mt-2">
                         {% trans "آخر تحديث:" %} {% now "d/m/Y" %}
+                        {% if site_settings.version %}
+                        <span class="mx-2">•</span>
+                        <span class="text-primary-400">v{{ site_settings.version }}</span>
+                        {% endif %}
                     </p>
                 </div>
                 
-                <div class="flex flex-wrap gap-4 lg:gap-6 justify-center">
+                <div class="flex flex-wrap gap-6 justify-center">
                     <a href="{% url 'core:privacy' %}" class="footer-bottom-link group">
-                        <i class="fas fa-shield-alt mr-2"></i>
+                        <i class="fas fa-shield-alt mr-3 text-blue-400"></i>
                         {% trans "سياسة الخصوصية" %}
+                        <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity rtl:rotate-180 ml-2"></i>
                     </a>
                     <a href="{% url 'core:terms' %}" class="footer-bottom-link group">
-                        <i class="fas fa-file-contract mr-2"></i>
+                        <i class="fas fa-file-contract mr-3 text-green-400"></i>
                         {% trans "شروط الخدمة" %}
+                        <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity rtl:rotate-180 ml-2"></i>
                     </a>
-                    {% comment %} <a href="{% url 'core:sitemap' %}" class="footer-bottom-link group">
-                        <i class="fas fa-sitemap mr-2"></i>
-                        {% trans "خريطة الموقع" %}
-                    </a> {% endcomment %}
+   
                     <a href="{% url 'core:contact' %}" class="footer-bottom-link group">
-                        <i class="fas fa-headset mr-2"></i>
+                        <i class="fas fa-headset mr-3 text-purple-400"></i>
                         {% trans "الدعم" %}
+                        <i class="fas fa-chevron-left text-xs opacity-0 group-hover:opacity-100 transition-opacity rtl:rotate-180 ml-2"></i>
                     </a>
                 </div>
             </div>
@@ -292,35 +335,251 @@
         
         <!-- Payment Methods -->
         {% if site_settings.payment_methods.all %}
-        <div class="mt-8 pt-6 border-t border-gray-800">
-            <p class="text-gray-400 text-sm mb-4 text-center">{% trans "طرق الدفع المدعومة" %}</p>
-            <div class="flex flex-wrap justify-center gap-4">
+        <div class="mt-12 pt-10 border-t border-gray-800">
+            <p class="text-gray-400 text-lg mb-6 text-center font-medium">{% trans "طرق الدفع المدعومة" %}</p>
+            <div class="flex flex-wrap justify-center gap-6">
                 {% for method in site_settings.payment_methods.all %}
-                <div class="w-12 h-8 bg-gray-800 rounded flex items-center justify-center">
+                <div class="w-16 h-12 bg-gray-800/50 backdrop-blur-sm rounded-lg flex items-center justify-center p-3 transform hover:scale-110 hover:bg-gray-700 transition-all duration-300 border border-gray-700">
+                    {% if method.icon %}
                     <img src="{{ method.icon.url }}" 
                          alt="{{ method.name }}" 
-                         class="max-w-full max-h-full"
+                         class="max-w-full max-h-full filter brightness-0 invert"
                          loading="lazy">
+                    {% else %}
+                    <span class="text-gray-400 font-medium text-sm">{{ method.name }}</span>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
         </div>
         {% endif %}
         
-        <!-- Security Badges -->
-        <div class="mt-6 flex flex-wrap justify-center gap-6">
-            <div class="flex items-center text-green-400 text-sm">
-                <i class="fas fa-lock mr-2"></i>
-                <span>{% trans "آمن 100%" %}</span>
-            </div>
-            <div class="flex items-center text-blue-400 text-sm">
-                <i class="fas fa-shield-check mr-2"></i>
-                <span>{% trans "مصدق عليه" %}</span>
-            </div>
-            <div class="flex items-center text-yellow-400 text-sm">
-                <i class="fas fa-bolt mr-2"></i>
-                <span>{% trans "سريع" %}</span>
+        <!-- Security & Trust Badges -->
+        <div class="mt-10 pt-8 border-t border-gray-800">
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="flex items-center gap-3 bg-gradient-to-r from-gray-800/50 to-gray-900/50 px-6 py-3 rounded-xl border border-gray-700">
+                    <div class="w-10 h-10 bg-green-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lock text-green-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-medium">100% {% trans "آمن" %}</div>
+                        <div class="text-gray-400 text-sm">SSL {% trans "مشفر" %}</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3 bg-gradient-to-r from-gray-800/50 to-gray-900/50 px-6 py-3 rounded-xl border border-gray-700">
+                    <div class="w-10 h-10 bg-blue-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-check text-blue-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-medium">{% trans "مصدق عليه" %}</div>
+                        <div class="text-gray-400 text-sm">ISO 27001</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3 bg-gradient-to-r from-gray-800/50 to-gray-900/50 px-6 py-3 rounded-xl border border-gray-700">
+                    <div class="w-10 h-10 bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-yellow-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-medium">{% trans "سريع" %}</div>
+                        <div class="text-gray-400 text-sm">CDN {% trans "ممتد" %}</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3 bg-gradient-to-r from-gray-800/50 to-gray-900/50 px-6 py-3 rounded-xl border border-gray-700">
+                    <div class="w-10 h-10 bg-purple-900/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-purple-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-white font-medium">24/7 {% trans "دعم" %}</div>
+                        <div class="text-gray-400 text-sm">{% trans "متاح دائماً" %}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </footer>
+
+<style>
+    /* Enhanced footer styles */
+    .social-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(0);
+        font-size: 18px;
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+    
+    .footer-link {
+        display: flex;
+        align-items: center;
+        color: #9CA3AF;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0.75rem 0;
+        font-size: 1.05rem;
+    }
+    
+    .footer-link:hover {
+        color: white;
+        transform: translateX(-8px);
+    }
+    
+    .footer-bottom-link {
+        display: flex;
+        align-items: center;
+        color: #9CA3AF;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0.5rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(31, 41, 55, 0.3);
+    }
+    
+    .footer-bottom-link:hover {
+        color: white;
+        background: rgba(31, 41, 55, 0.6);
+        transform: translateY(-2px);
+    }
+    
+    .footer-bottom-link i {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .footer-bottom-link:hover i:last-child {
+        transform: rotate(360deg);
+    }
+    
+    /* Animation for footer appearance */
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-on-scroll {
+        animation: fade-in-up 0.8s ease-out forwards;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .footer-link {
+            font-size: 1rem;
+        }
+        
+        .footer-bottom-link {
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Newsletter form submission
+        const newsletterForm = document.getElementById('newsletterForm');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const email = formData.get('email');
+                const csrfToken = formData.get('csrfmiddlewaretoken');
+                
+                // Validate email
+                if (!isValidEmail(email)) {
+                    showNotification('{% trans "الرجاء إدخال بريد إلكتروني صحيح" %}', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    // Success
+                    showNotification('{% trans "شكراً لك! تم الاشتراك بنجاح." %}', 'success');
+                    newsletterForm.reset();
+                    
+                    // Track in analytics
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'newsletter_subscription', {
+                            'event_category': 'engagement',
+                            'event_label': 'footer'
+                        });
+                    }
+                } catch (error) {
+                    showNotification('{% trans "حدث خطأ. حاول مرة أخرى." %}', 'error');
+                } finally {
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+        
+        // Add hover effects to payment methods
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+            });
+            
+            method.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+    
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+    
+    function showNotification(message, type = 'info') {
+        if (typeof window.showNotification === 'function') {
+            window.showNotification(message, type);
+        } else {
+            // Fallback notification
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 z-50 px-6 py-4 rounded-xl shadow-2xl text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} text-xl"></i>
+                    <span class="font-medium">${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+    }
+</script>

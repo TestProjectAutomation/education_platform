@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.db.models import Count
 from django.utils.translation import gettext_lazy as _
 from articles.models import Article
-from scholarships.models import Scholarship
 from books.models import Book
+from blog.models import Post, Category
 
 def home(request):    
     # المقالات المميزة
@@ -12,12 +12,9 @@ def home(request):
         is_featured=True
     ).order_by('-created_at')[:4]
     
-    # المنح المميزة
-    featured_scholarships = Scholarship.objects.filter(
-        status='published',
-        is_featured=True
-    ).order_by('-created_at')[:4]
-    
+    categorys_hed = Category.objects.all()
+
+
     # الكتب المميزة
     featured_books = Book.objects.filter(
         status='published',
@@ -27,7 +24,6 @@ def home(request):
     # الإحصائيات
     stats = {
         'total_articles': Article.objects.filter(status='published').count(),
-        'total_scholarships': Scholarship.objects.filter(status='published').count(),
         'total_books': Book.objects.filter(status='published').count(),
         'total_students': 1250,  # في التطبيق الحقيقي، سيتم حسابها من قاعدة البيانات
     }
@@ -41,10 +37,10 @@ def home(request):
 
     context = {
         'featured_articles': featured_articles,
-        'featured_scholarships': featured_scholarships,
         'featured_books': featured_books,
         'stats': stats,
         'stats_fallback': stats_fallback,
+        'categorys_hed': categorys_hed
     }
     
     return render(request, 'core/home.html', context)
