@@ -28,7 +28,7 @@ urlpatterns += i18n_patterns(
     path('scholarships/', include('scholarships.urls')),
     path('books/', include('books.urls')),
     path('pages/', include('pages.urls')),
-    
+    path('blog/', include('blog.urls')),
     # Dashboard
     # path('dashboard/', include('dashboard.urls')),
     

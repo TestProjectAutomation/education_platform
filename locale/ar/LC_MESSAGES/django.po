@@ -1,0 +1,159 @@
+# Pages app Arabic translations
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Pages System\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid "Title"
+msgstr "العنوان"
+
+msgid "Content"
+msgstr "المحتوى"
+
+msgid "Excerpt"
+msgstr "الملخص"
+
+msgid "Featured Image"
+msgstr "الصورة الرئيسية"
+
+msgid "Thumbnail"
+msgstr "الصورة المصغرة"
+
+msgid "Template"
+msgstr "القالب"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Order"
+msgstr "الترتيب"
+
+msgid "Show in Menu"
+msgstr "إظهار في القائمة"
+
+msgid "Show in Sitemap"
+msgstr "إظهار في خريطة الموقع"
+
+msgid "Parent"
+msgstr "الصفحة الأم"
+
+msgid "Author"
+msgstr "المؤلف"
+
+msgid "Allow Comments"
+msgstr "السماح بالتعليقات"
+
+msgid "SEO Title"
+msgstr "عنوان SEO"
+
+msgid "SEO Description"
+msgstr "وصف SEO"
+
+msgid "SEO Keywords"
+msgstr "كلمات مفتاحية SEO"
+
+msgid "Canonical URL"
+msgstr "رابط الكانونيكال"
+
+msgid "Publish Date"
+msgstr "تاريخ النشر"
+
+msgid "Expire Date"
+msgstr "تاريخ الانتهاء"
+
+msgid "Created At"
+msgstr "تاريخ الإنشاء"
+
+msgid "Updated At"
+msgstr "تاريخ التحديث"
+
+msgid "Views"
+msgstr "المشاهدات"
+
+msgid "Draft"
+msgstr "مسودة"
+
+msgid "Published"
+msgstr "منشور"
+
+msgid "Private"
+msgstr "خاص"
+
+msgid "Archived"
+msgstr "مؤرشف"
+
+msgid "Default Template"
+msgstr "القالب الافتراضي"
+
+msgid "Full Width"
+msgstr "عرض كامل"
+
+msgid "Sidebar Left"
+msgstr "الشريط الجانبي الأيسر"
+
+msgid "Sidebar Right"
+msgstr "الشريط الجانبي الأيمن"
+
+msgid "Contact Page"
+msgstr "صفحة الاتصال"
+
+msgid "Landing Page"
+msgstr "صفحة الهبوط"
+
+msgid "Page not found"
+msgstr "الصفحة غير موجودة"
+
+msgid "Your comment has been submitted successfully."
+msgstr "تم إرسال تعليقك بنجاح."
+
+msgid "Thank you for your rating!"
+msgstr "شكراً لتقييمك!"
+
+msgid "Comments are not allowed for this page"
+msgstr "التعليقات غير مسموحة لهذه الصفحة"
+
+msgid "There was an error with your comment."
+msgstr "حدث خطأ في تعليقك."
+
+msgid "There was an error with your rating."
+msgstr "حدث خطأ في تقييمك."
+
+msgid "Please login to post a comment."
+msgstr "يرجى تسجيل الدخول لنشر تعليق."
+
+msgid "Please login to rate this page."
+msgstr "يرجى تسجيل الدخول لتقييم هذه الصفحة."
+
+msgid "No comments yet. Be the first to comment!"
+msgstr "لا توجد تعليقات بعد. كن أول من يعلق!"
+
+msgid "Rating must be between 1 and 5"
+msgstr "يجب أن يكون التقييم بين 1 و 5"
+
+msgid "Export Selected as CSV"
+msgstr "تصدير المحدد كملف CSV"
+
+msgid "Approve selected comments"
+msgstr "الموافقة على التعليقات المحددة"
+
+msgid "Disapprove selected comments"
+msgstr "رفض التعليقات المحددة"
+
+msgid "Selected comments have been approved."
+msgstr "تمت الموافقة على التعليقات المحددة."
+
+msgid "Selected comments have been disapproved."
+msgstr "تم رفض التعليقات المحددة."
+
+msgid "You cannot preview this page"
+msgstr "لا يمكنك معاينة هذه الصفحة"

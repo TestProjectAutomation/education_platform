@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ meta_title|default:page.title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+{% block meta_keywords %}{{ meta_keywords }}{% endblock %}
+{% block canonical %}{{ canonical_url }}{% endblock %}
+
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% for crumb in breadcrumbs %}
+        <li class="breadcrumb-item {% if forloop.last %}active{% endif %}">
+            {% if not forloop.last %}
+            <a href="{{ crumb.url }}">{{ crumb.title }}</a>
+            {% else %}
+            {{ crumb.title }}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<article class="page-detail">
+    <header class="page-header">
+        <h1 class="page-title">{{ page.title }}</h1>
+        
+        <div class="page-meta">
+            {% if page.author %}
+            <span class="meta-author">
+                <i class="fas fa-user"></i> {{ page.author.get_full_name|default:page.author.username }}
+            </span>
+            {% endif %}
+            
+            <span class="meta-date">
+                <i class="fas fa-calendar"></i> {{ page.created_at|date:"F j, Y" }}
+            </span>
+            
+            <span class="meta-views">
+                <i class="fas fa-eye"></i> {{ page.views }} views
+            </span>
+            
+            {% if avg_rating > 0 %}
+            <span class="meta-rating">
+                <i class="fas fa-star"></i> {{ avg_rating|floatformat:1 }} ({{ page.ratings.count }} ratings)
+            </span>
+            {% endif %}
+        </div>
+    </header>
+    
+    {% if page.featured_image %}
+    <div class="page-featured-image">
+        <img src="{{ page.featured_image.url }}" alt="{{ page.title }}" class="img-fluid rounded">
+    </div>
+    {% endif %}
+    
+    <div class="page-content">
+        {{ page.content|safe }}
+    </div>
+    
+    {% if page.allow_comments or page.ratings.exists %}
+    <footer class="page-footer mt-5">
+        {% if page.allow_comments %}
+        <div class="page-comments mt-5">
+            <h3 class="mb-4">Comments ({{ comments.count }})</h3>
+            
+            <div class="comment-form mb-5">
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'pages:add_comment' page.slug %}" id="comment-form">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ comment_form.content }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                </form>
+                {% else %}
+                <p class="alert alert-info">
+                    Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to post a comment.
+                </p>
+                {% endif %}
+            </div>
+            
+            <div class="comments-list">
+                {% for comment in comments %}
+                <div class="comment mb-4 {% if comment.parent %}ms-4{% endif %}" id="comment-{{ comment.id }}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="comment-header d-flex justify-content-between mb-3">
+                                <strong>{{ comment.user.get_full_name|default:comment.user.username }}</strong>
+                                <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+                            </div>
+                            <p class="comment-content">{{ comment.content }}</p>
+                            {% if user.is_authenticated %}
+                            <button class="btn btn-sm btn-outline-secondary reply-btn" 
+                                    data-comment-id="{{ comment.id }}">
+                                Reply
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted">No comments yet. Be the first to comment!</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="page-rating mt-5">
+            <h3 class="mb-4">Rate this page</h3>
+            
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'pages:add_rating' page.slug %}" id="rating-form">
+                {% csrf_token %}
+                <div class="rating-stars mb-3">
+                    {% for i in "12345" %}
+                    <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" 
+                           {% if user_rating.rating == i|add:0 %}checked{% endif %}>
+                    <label for="star{{ i }}">★</label>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Rating</button>
+            </form>
+            {% else %}
+            <p class="alert alert-info">
+                Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to rate this page.
+            </p>
+            {% endif %}
+            
+            <div class="rating-summary mt-3">
+                <div class="d-flex align-items-center">
+                    <div class="average-rating me-3">
+                        <strong>{{ avg_rating|floatformat:1 }}</strong>
+                        <small>/5</small>
+                    </div>
+                    <div class="rating-breakdown">
+                        {% for i in "54321" %}
+                        <div class="rating-row d-flex align-items-center mb-1">
+                            <span class="me-2">{{ i }}★</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                {% with count=page.ratings.filter|get_item:"rating"|default:0 %}
+                                {% widthratio count page.ratings.count 100 as percentage %}
+                                <div class="progress-bar" role="progressbar" 
+                                     style="width: {{ percentage }}%"></div>
+                                {% endwith %}
+                            </div>
+                            <span class="ms-2">{{ count }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {% endif %}
+</article>
+
+{% if related_pages %}
+<div class="related-pages mt-5">
+    <h3 class="mb-4">Related Pages</h3>
+    <div class="row">
+        {% for related in related_pages %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if related.thumbnail %}
+                <img src="{{ related.thumbnail.url }}" class="card-img-top" alt="{{ related.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ related.title }}</h5>
+                    <p class="card-text">{{ related.excerpt|truncatewords:20 }}</p>
+                    <a href="{{ related.get_absolute_url }}" class="btn btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // AJAX comment submission
+    $('#comment-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + response.error);
+                }
+            },
+            error: function(xhr) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+    
+    // AJAX rating submission
+    $('#rating-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('.average-rating strong').text(response.avg_rating);
+                    alert('Thank you for your rating!');
+                }
+            },
+            error: function(xhr) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+    
+    // Reply to comment
+    $('.reply-btn').on('click', function() {
+        const commentId = $(this).data('comment-id');
+        const form = $('#comment-form').clone();
+        form.find('button').text('Submit Reply');
+        form.append('<input type="hidden" name="parent" value="' + commentId + '">');
+        form.insertAfter('#comment-' + commentId + ' .card-body');
+        $(this).hide();
+    });
+});
+</script>
+{% endblock %}

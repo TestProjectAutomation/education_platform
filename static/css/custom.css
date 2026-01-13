@@ -1,0 +1,37 @@
+/* custom.css - إضافة ملف CSS منفصل */
+:root {
+    --primary-color: {
+            {
+            site_settings.primary_color|default: '#4f46e5'
+        }
+    }
+
+    ;
+
+    --secondary-color: {
+            {
+            site_settings.secondary_color|default: '#10b981'
+        }
+    }
+
+    ;
+    --accent-color: #8b5cf6;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+    --transition-speed: 300ms;
+    --border-radius: 12px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* تحسينات الأداء والتحميل السريع */
+.lazy-load {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lazy-loaded {
+    opacity: 1;
+}

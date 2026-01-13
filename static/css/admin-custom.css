@@ -1,0 +1,123 @@
+/* Custom admin styles for Pages app */
+
+/* Status badges */
+.badge-draft {
+    background-color: #6c757d;
+    color: white;
+}
+
+.badge-published {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-private {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.badge-archived {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Page list improvements */
+#result_list th {
+    white-space: nowrap;
+}
+
+#result_list td {
+    vertical-align: middle;
+}
+
+/* Form improvements */
+.field-excerpt textarea,
+.field-seo_description textarea {
+    font-size: 14px;
+}
+
+/* Preview button */
+.preview-btn {
+    background: #17a2b8;
+    border-color: #17a2b8;
+}
+
+/* Rating stars in admin */
+.rating-stars {
+    color: #ffc107;
+    font-size: 14px;
+}
+
+/* Hierarchy indentation */
+.field-parent select option {
+    padding-left: 20px;
+}
+
+/* Image preview */
+.image-preview {
+    max-width: 200px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+    #result_list {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+/* CKEditor customization */
+.cke_chrome {
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+/* Breadcrumbs in admin */
+.breadcrumbs-display {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 15px;
+}
+
+.breadcrumbs-display a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.breadcrumbs-display a:hover {
+    text-decoration: underline;
+}
+
+/* Stats boxes */
+.stats-box {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.stats-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.stats-box p {
+    margin: 0;
+    color: #666;
+}
+
+/* Tab improvements */
+.tab-content {
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+}
