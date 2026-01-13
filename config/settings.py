@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'modeltranslation',
     'hitcount',
+    'django_social_share',
 
     # Local apps
     'core',

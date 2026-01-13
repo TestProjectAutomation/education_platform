@@ -834,7 +834,28 @@ def insert_ads_in_content(content, ads):
     
     return '\n\n'.join(result_paragraphs)
 
-def send_comment_notification(comment):
+def send_article_by_email(article, recipient_email, sender_user):
+    """إرسال المقال عبر البريد الإلكتروني"""
+    subject = _('Article shared with you: {article}').format(article=article.title)
+        
+    context = {
+        'article': article,
+        'sender': sender_user,
+        'article_url': article.get_absolute_url(),
+    }
+    
+    message = render_to_string('emails/share_article.html', context)
+    
+    send_mail(
+        subject,
+        message,
+        'noreply@example.com',
+        [recipient_email],
+        html_message=message,
+        fail_silently=True
+    )
+
+def send_comment_notification(request ,comment):
     """إرسال إشعار بالتعليق الجديد"""
     subject = _('New comment on article: {article}').format(article=comment.article.title)
     
